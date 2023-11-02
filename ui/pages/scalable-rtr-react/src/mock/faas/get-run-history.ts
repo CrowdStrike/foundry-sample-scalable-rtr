@@ -128,7 +128,7 @@ export class GetRunHistoryHandler extends MockFaasHandler {
             body: {
               resources: currentPage,
               meta: {
-                total: history.length,
+                total: matchingLogs.length,
                 limit,
                 count: currentPage.length,
                 prev: prevCursor,
