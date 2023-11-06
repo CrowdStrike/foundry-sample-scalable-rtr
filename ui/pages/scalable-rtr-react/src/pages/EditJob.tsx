@@ -149,6 +149,7 @@ function EditJob() {
               parsedScheduleData,
             },
             id: data.job.body.resource.id,
+            version: data.job.body.resource.version,
           });
           navigate("/all-jobs", {
             state: { jobName: formData.jobName, action: "edit" },
