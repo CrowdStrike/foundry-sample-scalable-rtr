@@ -53,12 +53,12 @@ export function mapJobHistoryDetailsToTableData(
         },
         {
           label: hist["output_1"] ? "Download .csv" : "--",
-          type: "link",
+          type: hist["output_1"] ? "link" : "raw",
           href: hist["output_1"] ?? "--",
         },
         {
           label: hist["output_2"] ? "View In Logscale" : "--",
-          type: "link",
+          type: hist["output_2"] ? "link" : "raw",
           href: hist["output_2"] ?? "--",
         },
       ];

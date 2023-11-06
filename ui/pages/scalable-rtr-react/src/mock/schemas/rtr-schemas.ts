@@ -64,6 +64,7 @@ export const RTRJob = z.object({
 export const RTRCreateJobPayload = z.object({
   user_id: z.string(),
   user_name: z.string(),
+  version: z.number(),
 
   name: z.string(),
   description: z.string(),
