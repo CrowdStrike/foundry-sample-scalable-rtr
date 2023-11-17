@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "properties": {
+    "result": {
+      "items": {
+        "properties": {
+          "Key": {
+            "type": "string"
+          },
+          "Match": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "Key",
+          "Match"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "result"
+  ],
+  "type": "object"
+}

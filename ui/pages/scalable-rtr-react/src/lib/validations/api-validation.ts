@@ -181,6 +181,7 @@ export const JobSchema = z.object({
 
   output_format: z.array(z.string()),
   total_recurrences: z.number(),
+  run_count: z.number(),
 
   schedule: z.union([
     z.object({
@@ -236,6 +237,7 @@ export const jobDataSchema = z.object({
 export const RunHistorySchema = z.object({
   id: z.string(),
   job_id: z.string(),
+  execution_id: z.string(),
   name: z.string(),
   duration: z.string(),
   output_1: z.string().optional(),

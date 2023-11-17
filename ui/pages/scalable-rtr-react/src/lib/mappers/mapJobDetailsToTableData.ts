@@ -14,6 +14,7 @@ type Body =
   | TableDetails.BodyColumnLink
   | TableDetails.BodyColumnStatus
   | TableDetails.BodyColumnRaw
+  | TableDetails.BodyColumnNavigation
   | TableDetails.BodyColumnZonedDateTime;
 
 export function mapJobHistoryDetailsToTableData(
@@ -55,10 +56,11 @@ export function mapJobHistoryDetailsToTableData(
           label: hist["output_1"] ? "Download .csv" : "--",
           type: hist["output_1"] ? "link" : "raw",
           href: hist["output_1"] ?? "--",
+          isDownloadable: true,
         },
         {
           label: hist["output_2"] ? "View In Logscale" : "--",
-          type: hist["output_2"] ? "link" : "raw",
+          type: hist["output_2"] ? "navigation" : "raw",
           href: hist["output_2"] ?? "--",
         },
       ];

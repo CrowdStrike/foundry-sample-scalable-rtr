@@ -8,6 +8,13 @@ export interface BodyColumnLink {
   label: string;
   type: "link";
   href: string;
+  isDownloadable: boolean;
+}
+
+export interface BodyColumnNavigation {
+  label: string;
+  type: "navigation";
+  href: string;
 }
 
 export interface BodyColumnStatus {
@@ -39,6 +46,7 @@ export interface TableData {
       | BodyColumnStatus
       | BodyColumnRaw
       | BodyColumnZonedDateTime
+      | BodyColumnNavigation
     >
   >;
 }

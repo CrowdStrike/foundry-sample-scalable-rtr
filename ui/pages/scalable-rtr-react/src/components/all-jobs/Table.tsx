@@ -96,7 +96,11 @@ function Table({ jobs, handleHostsForDrawer }: Props) {
             <td>
               <ZonedDateTime timestamp={job.next_run} options={options} />
             </td>
-            <td>{job.total_recurrences ?? "- -"}</td>
+            <td>
+              {job.total_recurrences > 0
+                ? (job.run_count + " / " + job.total_recurrences)
+                : job.run_count}
+            </td>
             <td>
               {Array.isArray(job.target.hosts) &&
               job.target.hosts.length > 0 ? (

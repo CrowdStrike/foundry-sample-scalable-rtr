@@ -1,0 +1,93 @@
+name: Check if files or registry key exist
+multi_instance: true
+description: Check if files or registry key exist
+parameters:
+  actions:
+    configuration:
+      check_file_or_registry_exist_abb289a5:
+        properties:
+          keys:
+            required: true
+  conditions:
+    platform_is_equal_to_windows_host_groups_includes_to_parameterized_hostname_includes_to_parameterize_02ba0c09:
+      fields:
+        get_device_details_d2e382bd.Device.GetDetails.Groups:
+          required: false
+          multiple: true
+          operator: IN
+        device_query_78798221.Device.query.devices.#:
+          required: false
+          multiple: true
+          operator: IN
+  trigger:
+    node_id: trigger
+    fields:
+      timer_event_definition:
+        required: true
+trigger:
+  next:
+    - update_job_history_1c5df989
+  event: Schedule
+actions:
+  device_query_78798221:
+    next:
+      - activity_78798221_1b8a_4d0b_87b0_eb0ca0ec645c_device_query_devices_4ab24f5e
+    id: 68ffa99af40c84b36462daa076f535d0
+    properties:
+      device_status: all
+  update_job_history_1c5df989:
+    next:
+      - device_query_78798221
+    id: functions.job_history.update_job_history
+    properties:
+      definition_name: "${Workflow.Definition.Name}"
+      execution_id: "${Workflow.Execution.ID}"
+      execution_timestamp: "${Workflow.Execution.Time}"
+      status: In Progress
+loops:
+  activity_78798221_1b8a_4d0b_87b0_eb0ca0ec645c_device_query_devices_4ab24f5e:
+    for:
+      input: device_query_78798221.Device.query.devices
+      continue_on_partial_execution: true
+    trigger:
+      next:
+        - get_device_details_d2e382bd
+    actions:
+      check_file_or_registry_exist_abb289a5:
+        next:
+          - write_to_logscale___scalable_rtr_final_523beaac
+        id: rtr_scripts.check_file_or_registry_exist
+        properties:
+          device_id: "${device_query_78798221.Device.query.devices.#}"
+      get_device_details_d2e382bd:
+        next:
+          - platform_is_equal_to_windows_host_groups_includes_to_parameterized_hostname_includes_to_parameterize_02ba0c09
+        id: 6265dc947cc2252f74a5f25261ac36a9
+        properties:
+          device_id: "${device_query_78798221.Device.query.devices.#}"
+      write_to_logscale___scalable_rtr_final_523beaac:
+        id: 0ec68880256f6192b9abef766d31fb04
+        properties:
+          foundry_app_id: ${{FOUNDRY_APP_ID}}
+          _fields:
+            - "${check_file_or_registry_exist_abb289a5.RTR.App_check_file_or_registry_exist.aid}"
+            - "${check_file_or_registry_exist_abb289a5.RTR.App_check_file_or_registry_exist.cid}"
+            - "${check_file_or_registry_exist_abb289a5.RTR.App_check_file_or_registry_exist.result}"
+            - "${check_file_or_registry_exist_abb289a5.RTR.App_check_file_or_registry_exist.stdout}"
+            - "${get_device_details_d2e382bd.Device.GetDetails.Groups}"
+            - "${get_device_details_d2e382bd.Device.GetDetails.Hostname}"
+            - "${device_query_78798221.Device.query.devices.#}"
+            - "${Trigger.CID}"
+            - "${Trigger.Category.Schedule.}"
+            - "${Workflow.Execution.ID}"
+            - "${Workflow.Definition.Name}"
+            - "${Workflow.Execution.Time}"
+    conditions:
+      platform_is_equal_to_windows_host_groups_includes_to_parameterized_hostname_includes_to_parameterize_02ba0c09:
+        next:
+          - check_file_or_registry_exist_abb289a5
+        expression: get_device_details_d2e382bd.Device.GetDetails.Platform:'Windows'
+        display:
+        - Platform is equal to Windows
+        - Host groups includes to [parameterized]
+        - Hostname includes to [parameterized]

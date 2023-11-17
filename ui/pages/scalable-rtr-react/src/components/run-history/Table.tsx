@@ -27,9 +27,13 @@ interface Props {
 }
 
 function Table({ history, handleHostsForDrawer }: Props) {
-  const { timezone, dateFormat, locale } = useContext(FalconContext);
+  const { timezone, dateFormat, locale, falcon } = useContext(FalconContext);
   const options = { timezone, dateFormat, locale };
   const { set } = useUrlParamsTools({ pageUrl: "/run-history" });
+
+  const onNavigateToOutput2 = (url: string) => async () => {
+    await falcon.navigation.navigateTo({ path: url, target: "_blank" });
+  };
 
   return (
     <table className="text-left w-full">
@@ -120,6 +124,7 @@ function Table({ history, handleHostsForDrawer }: Props) {
                     <Link
                       className="text-cslineargradient hover:[.text-cslineargradientfocus]"
                       to={job.output_1}
+                      download={true}
                     >
                       Download .csv
                     </Link>
@@ -129,12 +134,13 @@ function Table({ history, handleHostsForDrawer }: Props) {
                 </td>
                 <td>
                   {job.output_2 ? (
-                    <Link
+                    <button
                       className="text-cslineargradient hover:[.text-cslineargradientfocus]"
-                      to={job.output_2}
+                      onClick={onNavigateToOutput2(job.output_2)}
+                      type="button"
                     >
                       View in Logscale
-                    </Link>
+                    </button>
                   ) : (
                     "- -"
                   )}

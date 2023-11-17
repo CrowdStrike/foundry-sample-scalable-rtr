@@ -54,7 +54,7 @@ export const loader: Loader = ({ falcon }) => {
     // Add a computed page number to render the pagination data
     safeResult.body.meta.page = page;
 
-    return result;
+    return safeResult;
   };
 };
 
@@ -98,7 +98,7 @@ function AllJobs() {
     }
   }, [location.state]);
 
-  if (data.body.resources.length === 0) {
+  if (data.body.meta.total === 0) {
     return <NoJobs />;
   }
 

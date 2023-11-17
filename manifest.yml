@@ -1,0 +1,212 @@
+name: Scalable RTR demo
+description: A sample app to demonstrate RTR functionality
+logo: ""
+manifest_version: "2023-05-09"
+ignored:
+    - ui/(extensions|pages)/.*?/config
+    - ui/(extensions|pages)/.*?/node_modules
+    - ui/pages/scalable-rtr-react/stats.html
+    - ui/(extensions|pages)/.*?/src
+    - ui/(extensions|pages)/.*?/.*?\.(md|log|lock|cjs|log)
+    - ui/(extensions|pages)/.*?/\.eslintrc\.cjs
+    - ui/(extensions|pages)/.*?/\.gitignore
+    - ui/(extensions|pages)/.*?/\.stylelintrc\.js
+    - ui/(extensions|pages)/.*?/package\.json
+    - ui/(extensions|pages)/.*?/postcss\.config\.js
+    - ui/(extensions|pages)/.*?/tailwind\.config\.js
+    - ui/(extensions|pages)/.*?/tsconfig\.json
+    - ui/(extensions|pages)/.*?/tsconfig\.node\.json
+    - ui/(extensions|pages)/.*?/vite\.config\.ts
+    - ui/(extensions|pages)/*\.gz
+    - ui/(extensions|pages)/scalable-rtr-react/index\.html
+ui:
+    homepage: pages.scalable-rtr-react
+    extensions: []
+    pages:
+        scalable-rtr-react:
+            name: scalable-rtr-react
+            description: A sample app built with React
+            path: ui/pages/scalable-rtr-react/dist
+            entrypoint: ui/pages/scalable-rtr-react/dist/index.html
+            content_security_policy:
+                connect-src:
+                    - https://cdn.jsdelivr.net
+                    - 'data:'
+                style-src: []
+                style-src-elem: []
+                script-src: []
+                form-action: []
+                img-src: []
+                media-src: []
+                object-src: []
+            permissions: []
+    dashboards: {}
+    navigation:
+        links:
+            - path: /
+              name: All Jobs
+              permissions: []
+              ref: pages.scalable-rtr-react
+            - path: /run-history
+              name: Run History
+              permissions: []
+              ref: pages.scalable-rtr-react
+            - path: /audit-log
+              name: Audit Log
+              permissions: []
+              ref: pages.scalable-rtr-react
+api_integrations: []
+rtr_scripts:
+    - name: check_file_or_registry_exist
+      platform: Windows
+      description: Check if the file or registry exist.
+      path: rtr-scripts/check_file_or_registry_exist
+      script_name: script.ps1
+      permissions: []
+      workflow_integration:
+        disruptive: false
+        system_action: false
+        tags: []
+        input_schema: input_schema.json
+        output_schema: output_schema.json
+    - name: Check_Registry_Exist
+      platform: Windows
+      description: Check if registry key exist
+      path: rtr-scripts/Check_Registry_Exist
+      script_name: script.ps1
+      permissions: []
+      workflow_integration:
+        disruptive: false
+        system_action: false
+        tags: []
+        input_schema: input_schema.json
+        output_schema: output_schema.json
+collections:
+    - name: Jobs_Audit_Logger_Scalable_RTR
+      description: Audit logs for the job
+      schema: collections/audit_logs_schema.json
+      permissions: []
+      workflow_integration:
+        system_action: false
+        tags: []
+    - name: Jobs_Info_Scalable_RTR
+      description: job collection storage.
+      schema: collections/job_schema.json
+      permissions: []
+      workflow_integration: null
+    - name: Job_Executions_Scalable_RTR
+      description: Job execution history
+      schema: collections/job_executions_schema.json
+      permissions: []
+      workflow_integration:
+        system_action: false
+        tags: []
+    - name: Job_Executions_CSV_Scalable_RTR
+      description: job collection storage.
+      schema: null
+      permissions: []
+      workflow_integration: null
+auth:
+    scopes:
+        - real-time-response-admin:write
+        - devices:read
+        - devices:write
+        - workflow:write
+        - workflow:read
+        - usermgmt:read
+    permissions: {}
+    roles: []
+functions:
+    - name: Func_Jobs
+      config: null
+      description: Create an function to create, update, query and audit the jobs.
+      path: functions/Func_Jobs
+      environment_variables: {}
+      handlers:
+        - name: rapid_response_get_audits
+          description: Create an function to create, update, query and audit the jobs
+          method: GET
+          api_path: /audits
+          request_schema: null
+          response_schema: null
+          workflow_integration: null
+          permissions: []
+        - name: rapid_response_get_jobs
+          description: Returns a list of jobs.
+          method: GET
+          api_path: /jobs
+          request_schema: null
+          response_schema: null
+          workflow_integration: null
+          permissions: []
+        - name: rapid_response_get_job
+          description: Returns a job.
+          method: GET
+          api_path: /job
+          request_schema: null
+          response_schema: null
+          workflow_integration: null
+          permissions: []
+        - name: rapid_response_create_update_job
+          description: Create, Update, Query Jobs
+          method: PUT
+          api_path: /upsert-job
+          request_schema: null
+          response_schema: null
+          workflow_integration:
+            disruptive: false
+            system_action: false
+            tags:
+                - Rapid Response
+          permissions: []
+      language: go
+    - name: job_history
+      config: null
+      description: Job histories and executions
+      path: functions/job_history
+      environment_variables: {}
+      handlers:
+        - name: run_history
+          description: Job histories and executions
+          method: GET
+          api_path: /run-history
+          request_schema: null
+          response_schema: null
+          workflow_integration: null
+          permissions: []
+        - name: update_job_history
+          description: Foundry RTR Job Upsert
+          method: PUT
+          api_path: /upsert
+          request_schema: input_schema.json
+          response_schema: null
+          workflow_integration:
+            disruptive: false
+            system_action: false
+            tags:
+                - job_history
+          permissions: []
+      language: go
+workflows:
+    - name: Check if files or registry key exist
+      path: workflows/Check_if_files_or_registry_key_exist.yml
+    - name: Notify status
+      path: workflows/Notify_status.yml
+    - name: Check_If_Registry_key_Value_Exist
+      path: workflows/Check_If_Registry_key_Value_Exist.yml
+logscale:
+    saved_searches:
+        - name: Query By WorkflowRootExecutionID
+          description: Queries entries by WorkflowRootExecutionID for each job.
+          query_path: saved-searches/Query_By_WorkflowRootExecutionID/query.txt
+          query_params:
+            execution_id: ""
+          input_schema_path: saved-searches/Query_By_WorkflowRootExecutionID/input_schema.json
+          earliest: 7d
+          latest: now
+          workflow_integration:
+            tags:
+                - Rapid Response
+                - Logscale
+            system_action: false
+          include_test_data: false

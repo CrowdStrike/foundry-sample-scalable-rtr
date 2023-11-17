@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "array",
+      "items":
+        {
+          "type": "object"
+        }
+    },
+    "cid": {
+      "type": "string"
+    },
+    "aid": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "result",
+    "cid",
+    "aid"
+  ]
+}
