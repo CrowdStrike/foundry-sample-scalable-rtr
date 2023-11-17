@@ -19,7 +19,6 @@ ignored:
     - ui/(extensions|pages)/.*?/vite\.config\.ts
     - ui/(extensions|pages)/*\.gz
     - ui/(extensions|pages)/scalable-rtr-react/index\.html
-    - functions/job_history_python
 ui:
     homepage: pages.scalable-rtr-react
     extensions: []

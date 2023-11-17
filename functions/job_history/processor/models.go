@@ -11,7 +11,7 @@ import (
 
 const (
 	csvCollection          = "Job_Executions_CSV_Scalable_RTR"
-	jobCollection          = "Jobs_Faas_Function_Demo_Scalable_RTR"
+	jobCollection          = "Jobs_Info_Scalable_RTR"
 	jobExecutionCollection = "Job_Executions_Scalable_RTR"
 )
 
@@ -74,9 +74,9 @@ type offsetMeta struct {
 }
 
 type workflowMeta struct {
-	ExecutionID        string `json:"execution_id,omitempty"`        // original WF 43b68d2eab8b1d5025dadee11b75596b
-	ExecutionTimestamp string `json:"execution_timestamp,omitempty"` // 2023-09-10T01:27:39Z
-	DefinitionName     string `json:"definition_name,omitempty"`     // Stone - Workflow FaaS invoke - 21db659a43cd (part after first hyphen is job name)
+	ExecutionID        string `json:"execution_id,omitempty"`
+	ExecutionTimestamp string `json:"execution_timestamp,omitempty"`
+	DefinitionName     string `json:"definition_name,omitempty"`
 	Status             string `json:"status,omitempty"`
 }
 
