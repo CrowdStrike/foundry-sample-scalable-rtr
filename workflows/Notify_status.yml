@@ -1,0 +1,46 @@
+name: Workflow Execution Notifier for scalable RTR for cid Foundry Platform Milestone one
+description: Workflow Execution Notifier workflow
+multi_instance: true
+parameters:
+  actions:
+    configuration:
+      send_email_1fddc95a:
+        properties:
+          to:
+            required: true
+  conditions:
+    definitionID_is_equal_to_parameterized_79b66807:
+      fields:
+        Trigger.Category.WorkflowExecution.DefinitionID:
+          required: true
+          multiple: true
+          operator: IN
+trigger:
+  next:
+    - definitionID_is_equal_to_parameterized_79b66807
+  event: WorkflowExecution
+actions:
+  send_email_1fddc95a:
+    id: 07413ef9ba7c47bf5a242799f59902cc
+    properties:
+      _fields:
+        - "${Trigger.Category.WorkflowExecution.ExecutionTimestamp}"
+        - "${Trigger.Category.WorkflowExecution.Status}"
+        - "${Workflow.Definition.Name}"
+      subject: 'Job: ${Trigger.Category.WorkflowExecution.WorkflowName} completed.'
+  update_job_history_008e4b72:
+    next:
+      - send_email_1fddc95a
+    id: functions.job_history.update_job_history
+    properties:
+      definition_name: "${Trigger.Category.WorkflowExecution.WorkflowName}"
+      execution_id: "${Trigger.Category.WorkflowExecution.ExecutionID}"
+      execution_timestamp: "${Trigger.Category.WorkflowExecution.ExecutionTimestamp}"
+      status: "${Trigger.Category.WorkflowExecution.Status}"
+conditions:
+  definitionID_is_equal_to_parameterized_79b66807:
+    next:
+      - update_job_history_008e4b72
+    expression: ''
+    display:
+      - DefinitionID is equal to [parameterized]
