@@ -17,11 +17,7 @@ Please report suspected security vulnerabilities by:
 + Submitting a [pull request](https://github.com/CrowdStrike/foundry-sample-scalable-rtr/pulls) to potentially resolve the issue. (New
   contributors: please review the content
   located [here](https://github.com/CrowdStrike/foundry-sample-scalable-rtr/blob/main/CONTRIBUTING.md).)
-+ Sending an email to __foundry@crowdstrike.com__.
-
-## Disclosure and mitigation process
-
-TODO !!!
++ Sending an email to __oss-security@crowdstrike.com__.
 
 ---
 
