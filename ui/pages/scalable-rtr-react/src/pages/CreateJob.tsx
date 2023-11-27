@@ -5,7 +5,6 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import BuildQuery from "@/components/create-job/BuildQuery/BuildQuery";
-import ChooseFormat from "@/components/create-job/ChooseFormat";
 import ChooseHost from "@/components/create-job/ChooseHost";
 import JobDetails from "@/components/create-job/DetailsJob";
 import Header from "@/components/create-job/Header";
@@ -24,7 +23,6 @@ import { Loader } from "@/lib/types";
 import {
   AllSteps,
   buildQuerySchema,
-  chooseFormatSchema,
   chooseHostSchema,
   jobDetailsSchema,
   scheduleSchema,
@@ -56,9 +54,6 @@ function CreateJob() {
       hosts: [],
       hostGroups: [],
       isOfflineQueueing: true,
-
-      outputFormat: ["csv", "logscale"],
-
       shouldRunNow: false,
       scheduleStrategy: "never",
       startDate: undefined,
@@ -81,7 +76,6 @@ function CreateJob() {
     const parsedJobDetailsData = jobDetailsSchema.safeParse(data);
     const parsedBuildQueryData = buildQuerySchema.safeParse(data);
     const parsedHostSchemaData = chooseHostSchema.safeParse(data);
-    const parsedFormatSchemaData = chooseFormatSchema.safeParse(data);
     const parsedScheduleData = scheduleSchema.safeParse(data);
 
     if (state.step1 === "editing") {
@@ -103,19 +97,12 @@ function CreateJob() {
         applyZodErrorsToFormErrors(parsedHostSchemaData, methods.setError);
       }
     } else if (state.step4 === "editing") {
-      if (parsedFormatSchemaData.success) {
-        goNext();
-      } else {
-        applyZodErrorsToFormErrors(parsedFormatSchemaData, methods.setError);
-      }
-    } else if (state.step5 === "editing") {
       if (parsedScheduleData.success) {
         console.log("Submit the form!");
         setLoadingState(true);
         const response = await createJob({
           data: {
             parsedBuildQueryData,
-            parsedFormatSchemaData,
             parsedHostSchemaData,
             parsedJobDetailsData,
             parsedScheduleData,
@@ -163,8 +150,7 @@ function CreateJob() {
                 {getStepStatus("step1").isCurrentStep && <JobDetails />}
                 {getStepStatus("step2").isCurrentStep && <BuildQuery />}
                 {getStepStatus("step3").isCurrentStep && <ChooseHost />}
-                {getStepStatus("step4").isCurrentStep && <ChooseFormat />}
-                {getStepStatus("step5").isCurrentStep && <Schedule />}
+                {getStepStatus("step4").isCurrentStep && <Schedule />}
               </motion.div>
             </AnimatePresence>
           </div>

@@ -10,7 +10,6 @@ import {
 import {
   AllSteps,
   BuildQuerySchema,
-  ChooseFormatSchema,
   ChooseHostSchema,
   JobDetailsSchema,
   ScheduleSchema,
@@ -22,7 +21,6 @@ interface ParsedZodData {
   parsedJobDetailsData: SafeParseReturnType<AllSteps, JobDetailsSchema>;
   parsedBuildQueryData: SafeParseReturnType<AllSteps, BuildQuerySchema>;
   parsedHostSchemaData: SafeParseReturnType<AllSteps, ChooseHostSchema>;
-  parsedFormatSchemaData: SafeParseReturnType<AllSteps, ChooseFormatSchema>;
   parsedScheduleData: SafeParseReturnType<AllSteps, ScheduleSchema>;
 }
 
@@ -38,7 +36,6 @@ function createJob(falcon: FalconApi<LocalData>) {
       parsedJobDetailsData,
       parsedBuildQueryData,
       parsedHostSchemaData,
-      parsedFormatSchemaData,
       parsedScheduleData,
     },
     id,
@@ -49,14 +46,12 @@ function createJob(falcon: FalconApi<LocalData>) {
         parsedJobDetailsData.success &&
         parsedBuildQueryData.success &&
         parsedHostSchemaData.success &&
-        parsedFormatSchemaData.success &&
         parsedScheduleData.success
       ) {
         const data = {
           ...parsedJobDetailsData.data,
           ...parsedBuildQueryData.data,
           ...parsedHostSchemaData.data,
-          ...parsedFormatSchemaData.data,
           ...parsedScheduleData.data,
         };
 
@@ -153,7 +148,6 @@ function createJob(falcon: FalconApi<LocalData>) {
           notifications: rest.peopleToNotify.map((option) => option.value),
           tags: null,
           action,
-          output_format: rest.outputFormat,
           run_now: rest.shouldRunNow,
           schedule,
           target: {

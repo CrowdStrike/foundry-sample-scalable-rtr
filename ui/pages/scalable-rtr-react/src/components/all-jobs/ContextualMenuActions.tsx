@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 interface Props {
   resetCtxMenuActions: (job: null) => void;
   jobID: string;
-  jobStatus: string;
-  jobName: string;
+  jobStatus: string; // TODO: For now use a string but after we would need to use a narrowed typed: "not_scheduled" "scheduled" "in_progress" "failed" "completed"
+  jobName: string; // TODO: RunHistory as of 15 September 2023 only support the filtering by jobName and not by jobId, once jobId is supported, remove that property
 }
 
 export function ContextualMenuActions({

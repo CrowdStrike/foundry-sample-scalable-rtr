@@ -179,7 +179,6 @@ export const JobSchema = z.object({
 
   action: z.union([queryFileSchema, queryRegistryKeySchema]),
 
-  output_format: z.array(z.string()),
   total_recurrences: z.number(),
   run_count: z.number(),
 
@@ -240,8 +239,6 @@ export const RunHistorySchema = z.object({
   execution_id: z.string(),
   name: z.string(),
   duration: z.string(),
-  output_1: z.string().optional(),
-  output_2: z.string().optional(),
   hosts: z.array(z.string()),
   numHosts: z.number(),
   receivedFiles: z.number(),

@@ -9,8 +9,7 @@ const progressBarStepper = [
   { label: "Enter details", stepName: "step1" },
   { label: "Build query", stepName: "step2" },
   { label: "Choose target hosts", stepName: "step3" },
-  { label: "Choose output", stepName: "step4" },
-  { label: "Set schedule", stepName: "step5" },
+  { label: "Set schedule", stepName: "step4" },
 ] as const;
 
 function ProgressBar() {

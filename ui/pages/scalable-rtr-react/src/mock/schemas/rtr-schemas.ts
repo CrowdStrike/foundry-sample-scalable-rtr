@@ -36,8 +36,6 @@ export const RTRJob = z.object({
 
   action: z.union([queryFileSchema, queryRegistryKeySchema]),
 
-  output_format: z.array(z.string()),
-
   schedule: z.union([
     z.object({
       time_cycle: z.string(),
@@ -72,8 +70,6 @@ export const RTRCreateJobPayload = z.object({
   tags: z.union([z.null(), z.array(z.string())]),
 
   action: z.union([queryFileSchema, queryRegistryKeySchema]),
-
-  output_format: z.array(z.string()),
 
   run_now: z.boolean(),
   schedule: z.union([
