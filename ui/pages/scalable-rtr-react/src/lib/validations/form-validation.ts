@@ -71,10 +71,6 @@ export const chooseHostSchema = z.union([
   hostGroupsSchema,
 ]);
 
-export const chooseFormatSchema = z.object({
-  outputFormat: z.array(z.string()).nonempty({ message: "Select one or more" }),
-});
-
 /**
  * Job Details Step schemas
  */
@@ -304,11 +300,9 @@ export const scheduleSchema = z.union([noScheduleSchema, scheduledSchema]);
  */
 export type BuildQuerySchema = z.infer<typeof buildQuerySchema>;
 export type ChooseHostSchema = z.infer<typeof chooseHostSchema>;
-export type ChooseFormatSchema = z.infer<typeof chooseFormatSchema>;
 export type JobDetailsSchema = z.infer<typeof jobDetailsSchema>;
 export type ScheduleSchema = z.infer<typeof scheduleSchema>;
 export type AllSteps = BuildQuerySchema &
   ChooseHostSchema &
-  ChooseFormatSchema &
   JobDetailsSchema &
   ScheduleSchema;

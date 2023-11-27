@@ -11,10 +11,8 @@ type MapOptions = {
 };
 
 type Body =
-  | TableDetails.BodyColumnLink
   | TableDetails.BodyColumnStatus
   | TableDetails.BodyColumnRaw
-  | TableDetails.BodyColumnNavigation
   | TableDetails.BodyColumnZonedDateTime;
 
 export function mapJobHistoryDetailsToTableData(
@@ -27,8 +25,6 @@ export function mapJobHistoryDetailsToTableData(
       "Date",
       "Hosts",
       "Received files",
-      "Output 1",
-      "Output 2",
     ],
     bodyColumns: history.map<Array<Body>>((hist) => {
       return [
@@ -51,17 +47,6 @@ export function mapJobHistoryDetailsToTableData(
         {
           label: "--",
           type: "raw",
-        },
-        {
-          label: hist["output_1"] ? "Download .csv" : "--",
-          type: hist["output_1"] ? "link" : "raw",
-          href: hist["output_1"] ?? "--",
-          isDownloadable: true,
-        },
-        {
-          label: hist["output_2"] ? "View In Logscale" : "--",
-          type: hist["output_2"] ? "navigation" : "raw",
-          href: hist["output_2"] ?? "--",
         },
       ];
     }),

@@ -17,8 +17,6 @@ const fields = [
   { label: "Run status", key: "status" },
   { label: "Duration", key: "duration" },
   { label: "Targeted hosts", key: "hosts" },
-  { label: "Output 1", key: "output_1" },
-  { label: "Output 2", key: "output_2" },
 ];
 
 interface Props {
@@ -27,13 +25,9 @@ interface Props {
 }
 
 function Table({ history, handleHostsForDrawer }: Props) {
-  const { timezone, dateFormat, locale, falcon } = useContext(FalconContext);
+  const { timezone, dateFormat, locale } = useContext(FalconContext);
   const options = { timezone, dateFormat, locale };
   const { set } = useUrlParamsTools({ pageUrl: "/run-history" });
-
-  const onNavigateToOutput2 = (url: string) => async () => {
-    await falcon.navigation.navigateTo({ path: url, target: "_blank" });
-  };
 
   return (
     <table className="text-left w-full">
@@ -114,32 +108,6 @@ function Table({ history, handleHostsForDrawer }: Props) {
                       className="text-cslineargradient hover:[.text-cslineargradientfocus]"
                     >
                       {job.hosts.length}
-                    </button>
-                  ) : (
-                    "- -"
-                  )}
-                </td>
-                <td>
-                  {job.output_1 ? (
-                    <Link
-                      className="text-cslineargradient hover:[.text-cslineargradientfocus]"
-                      to={job.output_1}
-                      download={true}
-                    >
-                      Download .csv
-                    </Link>
-                  ) : (
-                    "- -"
-                  )}
-                </td>
-                <td>
-                  {job.output_2 ? (
-                    <button
-                      className="text-cslineargradient hover:[.text-cslineargradientfocus]"
-                      onClick={onNavigateToOutput2(job.output_2)}
-                      type="button"
-                    >
-                      View in Logscale
                     </button>
                   ) : (
                     "- -"

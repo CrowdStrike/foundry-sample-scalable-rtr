@@ -68,17 +68,6 @@ export function mapSearchCriteriaPropsToDisplay(
     ];
   }
 
-  const outputFormat =
-    job.output_format.length > 0
-      ? [
-          {
-            value: job.output_format.join(", "),
-            label: "Output format",
-            name: "outputFormat",
-          },
-        ]
-      : [];
-
   const runOn = [
     {
       value: target.offline_queueing
@@ -93,7 +82,6 @@ export function mapSearchCriteriaPropsToDisplay(
     ...registryKeys,
     ...filePaths,
     ...hostsDisplay,
-    ...outputFormat,
     ...runOn,
   ];
 }
