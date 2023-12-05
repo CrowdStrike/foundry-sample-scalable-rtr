@@ -52,17 +52,17 @@ function RegistryKeyQuery() {
                 })}
                 className={`${
                   (errors as Record<string, { message: string }>)?.[
-                    `registryKeyPair-${index}-key`
+                    `registryKeyPairs-${index}-key`
                   ]?.message
                     ? "border-cscritical"
                     : "border-csinputbordercolor"
                 } bg-csinputcolorbg border border-solid focus:border-2 focus:border-cspurple outline-none relative w-full p-1 h-8 rounded-sm`}
               />
-              {`registryKeyPair-${index}-key` in errors && (
+              {`registryKeyPairs-${index}-key` in errors && (
                 <ErrorInput
                   errorMessage={
                     (errors as Record<string, { message: string }>)?.[
-                      `registryKeyPair-${index}-key`
+                      `registryKeyPairs-${index}-key`
                     ]?.message
                   }
                 />
@@ -76,24 +76,24 @@ function RegistryKeyQuery() {
                 Registry Key value
               </label>
               <input
-                id={`registryKeyPair-${index}-value`}
+                id={`registryKeyPairs-${index}-value`}
                 type="text"
                 {...register(`registryKeyPairs.${index}.value`, {
                   onChange: onChangeFieldType("value", index),
                 })}
                 className={`border-${
                   (errors as Record<string, { message: string }>)?.[
-                    `registryKeyPair-${index}-value`
+                    `registryKeyPairs-${index}-value`
                   ]?.message
                     ? "cscritical"
                     : "csinputbordercolor"
                 } bg-csinputcolorbg border border-solid focus:border-2 focus:border-cspurple outline-none relative w-full p-1 h-8 rounded-sm`}
               />
-              {`registryKeyPair-${index}-value` in errors && (
+              {`registryKeyPairs-${index}-value` in errors && (
                 <ErrorInput
                   errorMessage={
                     (errors as Record<string, { message: string }>)?.[
-                      `registryKeyPair-${index}-value`
+                      `registryKeyPairs-${index}-value`
                     ]?.message
                   }
                 />
@@ -102,7 +102,7 @@ function RegistryKeyQuery() {
             <div
               className={`flex ${
                 (errors as Record<string, { message: string }>)?.[
-                  `registryKeyPair-${index}-value`
+                  `registryKeyPairs-${index}-value`
                 ]?.message
                   ? "items-center"
                   : "items-end"

@@ -4,10 +4,15 @@ import FileQuery from "@/components/create-job/BuildQuery/FileQuery";
 import RegistryKeyQuery from "@/components/create-job/BuildQuery/RegistryKeyQuery";
 
 import { AllSteps } from "@/lib/validations/form-validation";
+import { useEffect } from "react";
 
 function BuildQuery() {
-  const { register, control } = useFormContext<AllSteps>();
+  const { register, control, clearErrors } = useFormContext<AllSteps>();
   const queryType = useWatch({ name: "queryType", control });
+
+  useEffect(() => {
+    clearErrors();
+  }, [clearErrors, queryType]);
 
   return (
     <div className="flex flex-col gap-5">

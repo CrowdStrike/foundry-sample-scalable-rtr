@@ -16,6 +16,7 @@ function ActionBar() {
   const {
     formState: { dirtyFields },
     getValues,
+    clearErrors,
   } = useFormContext();
   const { getStepStatus, currentStep, goBack } = useContext(CreateJobContext);
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function ActionBar() {
 
   const onGoBack = () => {
     resetErrors();
+    clearErrors();
     goBack();
   };
 
