@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"net/http"
 	"strings"
 	"time"
@@ -25,6 +26,16 @@ const (
 	JobEdited        ActionTaken = "Updated"
 	deviceHostGroups             = "groups"
 	staticMaxLimit               = 1000
+
+	secInDay = 86400
+)
+
+const (
+	// ISOTimeFormat is the standard ISO-8601 time format for date and time in UTC to the second precision.
+	ISOTimeFormat = "2006-01-02T15:04:05Z"
+	// ISOTimeFormatOffset is the standard ISO-8601 time format for date and time in UTC to the second precision,
+	// where the offset is presented as +/-hh:mm.
+	ISOTimeFormatOffset = "2006-01-02T15:04:05-07:00"
 )
 
 // ActionTaken enumerates the list of action taken on job
@@ -144,8 +155,56 @@ func jobInfo(ctx context.Context, id string, conf *models.Config, client *client
 	if result.OutputFormat == nil {
 		result.OutputFormat = append(result.OutputFormat, "logscale", "csv")
 	}
+	result = adjustRecurrence(result)
 
 	return &result, errs
+}
+
+func adjustRecurrence(j models.Job) models.Job {
+	if j.Draft {
+		return j
+	}
+	if j.RunNowSchedule != nil {
+		if j.TotalRecurrences > 0 && j.RunCount == j.TotalRecurrences {
+			j.NextRun = nil
+		}
+		if j.Schedule == nil {
+			return j
+		}
+	}
+	if j.Schedule == nil || j.Schedule.TimeCycle == "" || j.Schedule.End == "" || j.Schedule.Start == "" {
+		return j
+	}
+
+	// If end-start == 1 day AND time cycle is one day, then there is no recurrence.
+	start, _ := strToTime(j.Schedule.Start)
+	end, _ := strToTime(j.Schedule.End)
+	if math.Abs(end.Sub(start).Seconds()-secInDay) > 0.1 {
+		// start and end are one day apart
+		return j
+	}
+	nextRun, _ := models.NextRun(j.Schedule, start)
+	if math.Abs(nextRun.Sub(end).Seconds()) <= 0.1 {
+		// cron expression is one day
+		j.Schedule.TimeCycle = ""
+	}
+
+	if j.TotalRecurrences > 0 && j.RunCount == j.TotalRecurrences {
+		j.NextRun = nil
+	}
+
+	return j
+}
+
+func strToTime(s string) (time.Time, error) {
+	t, err := time.Parse(ISOTimeFormatOffset, s)
+	if err != nil {
+		t, err = time.Parse(ISOTimeFormat, s)
+		if err != nil {
+			return t, fmt.Errorf("failed to parse time: %s", err)
+		}
+	}
+	return t, nil
 }
 
 func search(ctx context.Context, req models.SearchObjectsRequest, client *client.CrowdStrikeAPISpecification) (models.SearchObjectsResponse, []fdk.APIError) {
@@ -387,10 +446,11 @@ func provisionWorkflowWithAct(ctx context.Context, req *models.Job, conf *models
 			NodeID: &buildQueryNodeID,
 		}
 		conditionForHostAndGroupsName.NodeID = &conf.FileExistConditionNodeID
-
+		templateName := &conf.BuildQFileExistTemplateName
 		if req.Action.BuildQueryAction.QueryType == models.RegistryKey {
 			conditionForHostAndGroupsName.NodeID = &conf.RegistryKeyValueConditionNodeID
 			buildQueryNodeID = "check_registry_exist_3e0e47d3"
+			templateName = &conf.BuildQRegistryKeyValueExistTemplateName
 			var keys, values []string
 			for _, registryKeyVal := range req.Action.BuildQueryAction.RegistryKeys {
 				keys = append(keys, registryKeyVal.Key)
@@ -408,7 +468,7 @@ func provisionWorkflowWithAct(ctx context.Context, req *models.Job, conf *models
 		}
 
 		reqBody.Parameters.Activities.Configuration = append(reqBody.Parameters.Activities.Configuration, &buildQuery)
-		reqBody.TemplateName = &conf.BuildQFileExistTemplateName
+		reqBody.TemplateName = templateName
 	default:
 		return nil, []fdk.APIError{{
 			Code:    http.StatusInternalServerError,

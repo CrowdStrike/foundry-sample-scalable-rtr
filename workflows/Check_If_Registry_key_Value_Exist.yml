@@ -1,4 +1,5 @@
 name: Check_If_Registry_key_Value_Exist
+multi_instance: true
 description: Check if files or registry key exist
 parameters:
   actions:
