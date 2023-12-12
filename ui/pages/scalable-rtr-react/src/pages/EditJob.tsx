@@ -90,7 +90,6 @@ function EditJob() {
       startDate: scheduleInfo.startDate,
       startTime: scheduleInfo.startTime,
       recurrencyStrategy: scheduleInfo.recurrencyStrategy as "never", // TS is not smart enough to infer the type here
-      repeatEvery: scheduleInfo.repeatEvery,
       frequencyType: scheduleInfo.frequencyType,
       daysOfWeek: scheduleInfo.daysOfWeek,
       daysOfMonth: scheduleInfo.daysOfMonth,

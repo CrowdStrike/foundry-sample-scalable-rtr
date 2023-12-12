@@ -38,7 +38,7 @@ export const RTRJob = z.object({
 
   schedule: z.union([
     z.object({
-      time_cycle: z.string(),
+      time_cycle: z.string().nullable().optional().default(null),
       start_date: z.string(),
       end_date: z.string().nullable().optional().default(null),
     }),
@@ -74,7 +74,7 @@ export const RTRCreateJobPayload = z.object({
   run_now: z.boolean(),
   schedule: z.union([
     z.object({
-      time_cycle: z.string(),
+      time_cycle: z.string().nullable().optional().default(null),
       start_date: z.string(),
       end_date: z.string().nullable().optional().default(null),
     }),

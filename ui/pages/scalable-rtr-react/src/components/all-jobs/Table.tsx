@@ -98,7 +98,7 @@ function Table({ jobs, handleHostsForDrawer }: Props) {
             </td>
             <td>
               {job.total_recurrences > 0
-                ? (job.run_count + " / " + job.total_recurrences)
+                ? String(job.run_count) + " / " + String(job.total_recurrences)
                 : job.run_count}
             </td>
             <td>

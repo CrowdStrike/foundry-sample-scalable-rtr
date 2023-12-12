@@ -59,7 +59,6 @@ function CreateJob() {
       startDate: undefined,
       startTime: undefined,
       recurrencyStrategy: "never",
-      repeatEvery: "1",
       frequencyType: "daily",
       daysOfWeek: [],
       daysOfMonth: [],

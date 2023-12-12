@@ -138,7 +138,6 @@ export const noScheduleSchema = z.object({
   startDate: z.string().optional(),
   startTime: z.string().optional(),
   recurrencyStrategy: z.union([z.literal("recurrent"), z.literal("never")]),
-  repeatEvery: z.string().optional(),
   frequencyType: z.string().optional(),
   daysOfWeek: daysOfWeekSchema.optional(),
   daysOfMonth: daysOfMonthSchema.optional(),
@@ -147,15 +146,6 @@ export const noScheduleSchema = z.object({
   timezone: z.string().default("UTC"),
 });
 
-const RepeatEverySchema = z
-  .string()
-  .refine((data) => !isNaN(Number(data)), {
-    message: "Provide a correct number.",
-  })
-  .transform((data) => {
-    return parseInt(data);
-  });
-
 export const scheduledWithNoRecurrenceSchema = z.object({
   shouldRunNow: z.coerce.boolean(),
   scheduleStrategy: z.literal("scheduleForLater"),
@@ -163,7 +153,6 @@ export const scheduledWithNoRecurrenceSchema = z.object({
   startTime: timeSchema("Select a start time"),
   recurrencyStrategy: z.literal("never"),
 
-  repeatEvery: z.string().optional(),
   frequencyType: z.string().optional(),
   daysOfWeek: daysOfWeekSchema.optional(),
   daysOfMonth: daysOfMonthSchema.optional(),
@@ -180,7 +169,6 @@ const scheduledRecurrenceHourAndDayTypeSchema = z.object({
   startTime: timeSchema("Select a start time"),
   recurrencyStrategy: z.literal("recurrent"),
 
-  repeatEvery: RepeatEverySchema,
   frequencyType: z.union([z.literal("hourly"), z.literal("daily")]),
   daysOfWeek: daysOfWeekSchema.optional(),
   daysOfMonth: daysOfMonthSchema.optional(),
@@ -197,7 +185,6 @@ const scheduledRecurrenceWeekTypeSchema = z.object({
   startTime: timeSchema("Select a start time"),
   recurrencyStrategy: z.literal("recurrent"),
 
-  repeatEvery: RepeatEverySchema,
   frequencyType: z.literal("weekly"),
   daysOfWeek: daysOfWeekSchema.nonempty("Select one or more"),
   daysOfMonth: daysOfMonthSchema.optional(),
@@ -214,7 +201,6 @@ const scheduledRecurrenceMonthTypeSchema = z.object({
   startTime: timeSchema("Select a start time"),
   recurrencyStrategy: z.literal("recurrent"),
 
-  repeatEvery: RepeatEverySchema,
   frequencyType: z.literal("monthly"),
   daysOfWeek: daysOfWeekSchema.optional(),
   daysOfMonth: daysOfMonthSchema.nonempty("Select one or more"),
@@ -237,7 +223,6 @@ const onEndRecurrenceHourAndDayTypeSchema = z.object({
   startTime: timeSchema("Select a start time"),
   recurrencyStrategy: z.literal("recurrent"),
 
-  repeatEvery: RepeatEverySchema,
   frequencyType: z.union([z.literal("hourly"), z.literal("daily")]),
   daysOfWeek: daysOfWeekSchema.optional(),
   daysOfMonth: daysOfMonthSchema.optional(),
@@ -254,7 +239,6 @@ const onEndRecurrenceWeekTypeSchema = z.object({
   startTime: timeSchema("Select a start time"),
   recurrencyStrategy: z.literal("recurrent"),
 
-  repeatEvery: RepeatEverySchema,
   frequencyType: z.literal("weekly"),
   daysOfWeek: daysOfWeekSchema.nonempty("Select one or more"),
   daysOfMonth: daysOfMonthSchema.optional(),
@@ -271,7 +255,6 @@ const onEndRecurrenceMonthTypeSchema = z.object({
   startTime: timeSchema("Select a start time"),
   recurrencyStrategy: z.literal("recurrent"),
 
-  repeatEvery: RepeatEverySchema,
   frequencyType: z.literal("monthly"),
   daysOfWeek: daysOfWeekSchema.optional(),
   daysOfMonth: daysOfMonthSchema.nonempty("Select one or more"),

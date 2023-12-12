@@ -20,12 +20,7 @@ export function mapJobHistoryDetailsToTableData(
   options: MapOptions,
 ): TableDetails.TableData {
   return {
-    headColumns: [
-      "Status",
-      "Date",
-      "Hosts",
-      "Received files",
-    ],
+    headColumns: ["Status", "Date", "Hosts", "Received files"],
     bodyColumns: history.map<Array<Body>>((hist) => {
       return [
         {

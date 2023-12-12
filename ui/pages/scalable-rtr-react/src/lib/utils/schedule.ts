@@ -16,7 +16,6 @@ type RawSchedule = {
 type ScheduleInfo = {
   strategy: "scheduleForLater" | "never";
   recurrencyStrategy: "recurrent" | "never";
-  repeatEvery?: string;
   frequencyType?: string;
   daysOfMonth?: string[];
   daysOfWeek?: (
@@ -44,7 +43,6 @@ export function parseSchedule(
     return {
       strategy,
       recurrencyStrategy,
-      repeatEvery: "1",
       frequencyType: "hourly",
       endsType: "never",
     };
@@ -59,7 +57,6 @@ export function parseSchedule(
 
   const startDate = startDateTimeLocal.date;
   let startTime = startDateTimeLocal.time;
-  let repeatEvery = "";
   let frequencyType = "hourly";
   let daysOfWeek: ScheduleInfo["daysOfWeek"] = [];
   let daysOfMonth: ScheduleInfo["daysOfMonth"] = [];
@@ -86,7 +83,6 @@ export function parseSchedule(
 
       recurrencyStrategy =
         frequency || daysInMonth || daysInWeek ? "recurrent" : "never";
-      repeatEvery = String(frequency) ?? "";
       frequencyType = interval ?? "hourly";
       daysOfMonth = (daysInMonth || []).map((day) => String(day));
       daysOfWeek = (daysInWeek || []).map((day) => {
@@ -115,7 +111,6 @@ export function parseSchedule(
     strategy,
     recurrencyStrategy,
     frequencyType,
-    repeatEvery,
     daysOfWeek,
     daysOfMonth,
     startDate,
