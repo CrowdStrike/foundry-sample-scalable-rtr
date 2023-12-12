@@ -76,7 +76,6 @@ function createJob(falcon: FalconApi<LocalData>) {
             startTime,
             endDate,
             frequencyType,
-            repeatEvery,
             daysOfWeek,
             daysOfMonth,
           } = rest;
@@ -120,7 +119,7 @@ function createJob(falcon: FalconApi<LocalData>) {
           const time_cycle =
             rest.recurrencyStrategy === "recurrent"
               ? convertJSONToCron({
-                  frequency: Number(repeatEvery ?? 1),
+                  frequency: 1,
                   interval: frequencyType ?? "hourly",
                   startTime: asPlainTime(utcStart),
                   daysInWeek:

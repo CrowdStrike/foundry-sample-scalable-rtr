@@ -112,20 +112,14 @@ function Recurrence() {
   return (
     <div className="m-auto flex w-11/12 flex-col gap-5">
       <div className="flex w-full items-center gap-2">
-        <label htmlFor="repeatEvery" className="w-1/12">
+        <label htmlFor="frequencyType" className="w-3/12">
           Repeat every
         </label>
-        <input
-          id="repeatEvery"
-          {...register("repeatEvery")}
-          type="text"
-          className="relative h-8 w-2/12 rounded-sm border border-solid border-csinputbordercolor bg-cstransparencyoverlaydarker p-1 outline-none focus:border-2 focus:border-cspurple"
-        />
         <SlSelect
           id="frequencyType"
           onSlChange={onSlSelectChangeFrequency}
           value={frequencyType}
-          className="w-9/12"
+          className="w-full"
         >
           {frequencyTypeConst.map((type) => (
             <SlOption key={type.value} className="csOption" value={type.value}>
@@ -134,9 +128,6 @@ function Recurrence() {
           ))}
         </SlSelect>
       </div>
-      {typeof errors.repeatEvery?.message === "string" ? (
-        <ErrorInput errorMessage={errors.repeatEvery?.message} />
-      ) : null}
       {frequencyType === "daily" || frequencyType === "hourly" ? null : (
         <div className="flex flex-col gap-2">
           <label>On these days</label>

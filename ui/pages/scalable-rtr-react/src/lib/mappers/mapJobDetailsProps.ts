@@ -78,12 +78,7 @@ export function mapSearchCriteriaPropsToDisplay(
     },
   ];
 
-  return [
-    ...registryKeys,
-    ...filePaths,
-    ...hostsDisplay,
-    ...runOn,
-  ];
+  return [...registryKeys, ...filePaths, ...hostsDisplay, ...runOn];
 }
 
 export function mapSchedulePropsToDisplay(job: Job): DisplayStruct[] {
