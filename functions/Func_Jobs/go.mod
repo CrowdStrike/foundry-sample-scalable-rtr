@@ -3,7 +3,7 @@ module github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/Func_Jobs
 go 1.21
 
 require (
-	github.com/CrowdStrike/foundry-fn-go v0.15.0
+	github.com/CrowdStrike/foundry-fn-go v0.17.0
 	github.com/crowdstrike/gofalcon v0.4.3-0.20231013182855-e96a02e115d9
 	github.com/go-openapi/runtime v0.26.0
 	github.com/robfig/cron/v3 v3.0.1
@@ -27,12 +27,10 @@ require (
 	github.com/go-openapi/validate v0.22.1 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
-	github.com/kr/pretty v0.3.1 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	go.mongodb.org/mongo-driver v1.11.3 // indirect
 	go.opentelemetry.io/otel v1.14.0 // indirect
 	go.opentelemetry.io/otel/trace v1.14.0 // indirect
