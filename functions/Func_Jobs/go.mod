@@ -3,7 +3,7 @@ module github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/Func_Jobs
 go 1.21
 
 require (
-	github.com/CrowdStrike/foundry-fn-go v0.18.0
+	github.com/CrowdStrike/foundry-fn-go v0.19.0
 	github.com/crowdstrike/gofalcon v0.4.3-0.20231013182855-e96a02e115d9
 	github.com/go-openapi/runtime v0.26.0
 	github.com/robfig/cron/v3 v3.0.1
