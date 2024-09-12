@@ -20,7 +20,9 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: build
+          dir: ui/pages/scalable-rtr-react
       - name: Test the app
         uses: borales/actions-yarn@v5
         with:
           cmd: test
+          dir: ui/pages/scalable-rtr-react
