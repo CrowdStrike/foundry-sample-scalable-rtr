@@ -2,78 +2,42 @@ package api
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"math"
 	"net/http"
 	"time"
 
-	fdk "github.com/CrowdStrike/foundry-fn-go"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/Func_Jobs/api/models"
 	"github.com/crowdstrike/gofalcon/falcon/client"
+
+	fdk "github.com/CrowdStrike/foundry-fn-go"
 )
 
 const queryIsDraft = "draft"
 
-// UpsertJobHandler executes a given request to the FaaS function.
-type UpsertJobHandler struct {
-	conf *models.Config
-}
+func upsertJobHandler(conf *models.Config) func(ctx context.Context, of fdk.RequestOf[models.UpsertJobRequest]) fdk.Response {
+	return func(ctx context.Context, request fdk.RequestOf[models.UpsertJobRequest]) fdk.Response {
+		isDraft := request.Params.Query.Get(queryIsDraft) == "true"
 
-func NewUpsertJobHandler(conf *models.Config) *UpsertJobHandler {
-	return &UpsertJobHandler{
-		conf: conf,
+		client, err := models.FalconClient(ctx, conf, request.AccessToken)
+		if err != nil {
+			return fdk.ErrResp(fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
+		}
+
+		result, errs := upsertJob(ctx, conf, isDraft, &request.Body, client)
+		if len(errs) != 0 {
+			return fdk.ErrResp(errs...)
+		}
+
+		return fdk.Response{
+			Code: http.StatusOK,
+			Body: fdk.JSON(result),
+		}
 	}
-}
-
-func (h *UpsertJobHandler) Handle(ctx context.Context, request fdk.Request) fdk.Response {
-	response := fdk.Response{}
-	var isDraft bool
-
-	var req models.UpsertJobRequest
-	var errs []fdk.APIError
-
-	// TODO: utilize fdk.HandlerFnOf
-	err := json.NewDecoder(request.Body).Decode(&req)
-	if err != nil {
-		response.Code = http.StatusBadRequest
-		response.Errors = append(response.Errors, models.NewAPIError(http.StatusBadRequest, fmt.Sprintf("Failed to unmarshal Request body err: %v.", err)))
-		return response
-	}
-
-	queryParams := request.Params.Query.Get(queryIsDraft)
-	if queryParams == "true" {
-		isDraft = true
-	}
-
-	client, err := models.FalconClient(ctx, h.conf, request)
-	if err != nil {
-		response.Code = http.StatusInternalServerError
-		response.Errors = append(response.Errors, fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
-		return response
-	}
-
-	result, errs := h.upsertJob(ctx, isDraft, &req, client)
-	if len(errs) != 0 {
-		response.Code = http.StatusInternalServerError
-		response.Errors = errs
-		return response
-	}
-
-	body, err := json.Marshal(result)
-	if err != nil {
-		response.Code = http.StatusInternalServerError
-		response.Errors = append(response.Errors, models.NewAPIError(http.StatusInternalServerError, fmt.Sprintf("failed to marshal the response body with err: %v", err)))
-		return response
-	}
-
-	response.Body = json.RawMessage(body)
-	response.Code = http.StatusOK
-	return response
 }
 
 // upsertJob saves a job to custom storage and may attempt to run or schedule the job if requested.
-func (h *UpsertJobHandler) upsertJob(ctx context.Context, isDraft bool, req *models.UpsertJobRequest, client *client.CrowdStrikeAPISpecification) (*models.UpsertJobResponse, []fdk.APIError) {
+func upsertJob(ctx context.Context, conf *models.Config, isDraft bool, req *models.UpsertJobRequest, client *client.CrowdStrikeAPISpecification) (*models.UpsertJobResponse, []fdk.APIError) {
 	var errs []fdk.APIError
 	var err error
 
@@ -89,7 +53,7 @@ func (h *UpsertJobHandler) upsertJob(ctx context.Context, isDraft bool, req *mod
 			validationErr = append(validationErr, models.NewAPIError(http.StatusInternalServerError, fmt.Sprintf("failed to generate id for job: %s with err: %v", req.Name, err)))
 			return nil, validationErr
 		}
-		prevJob, errs := jobInfo(ctx, id, h.conf, client)
+		prevJob, errs := jobInfo(ctx, id, conf, client)
 		if len(errs) != 0 {
 			if errs[0].Code != http.StatusNotFound {
 				validationErr = append(validationErr, errs...)
@@ -105,14 +69,14 @@ func (h *UpsertJobHandler) upsertJob(ctx context.Context, isDraft bool, req *mod
 		}
 	}
 
-	decorateErr := h.decorateRequest(ctx, isDraft, id, &req.Job, client)
+	decorateErr := decorateRequestUpsertReq(ctx, conf, isDraft, id, &req.Job, client)
 	if len(decorateErr) != 0 {
 		validationErr = append(validationErr, decorateErr...)
 		return nil, validationErr
 	}
 
 	// create the object in the custom_storage.
-	jobID, errs := putJob(ctx, &req.Job, h.conf, client)
+	jobID, errs := putJob(ctx, &req.Job, conf, client)
 	if len(errs) != 0 {
 		validationErr = append(validationErr, errs...)
 		//validationErr = append(validationErr, models.NewAPIError(http.StatusInternalServerError, multierror.Append(fmt.Errorf("failed to create job: %s id: %s, with ", req.Name, id), errs...).Error()))
@@ -124,7 +88,7 @@ func (h *UpsertJobHandler) upsertJob(ctx context.Context, isDraft bool, req *mod
 		action = JobCreated
 	}
 
-	errs = auditLogProducer(ctx, action, &req.Job, h.conf, client)
+	errs = auditLogProducer(ctx, action, &req.Job, conf, client)
 	if len(errs) != 0 {
 		// we do not rollback transaction if auditlogger fails
 		validationErr = append(validationErr, errs...)
@@ -135,7 +99,7 @@ func (h *UpsertJobHandler) upsertJob(ctx context.Context, isDraft bool, req *mod
 	return &models.UpsertJobResponse{Resource: jobID}, nil
 }
 
-func (h *UpsertJobHandler) decorateRequest(ctx context.Context, isDraft bool, id string, req *models.Job, client *client.CrowdStrikeAPISpecification) []fdk.APIError {
+func decorateRequestUpsertReq(ctx context.Context, conf *models.Config, isDraft bool, id string, req *models.Job, client *client.CrowdStrikeAPISpecification) []fdk.APIError {
 	if !isDraft {
 		req.RunNowSchedule, req.WSchedule = updateSchedule(req)
 		var nextRun time.Time
@@ -175,12 +139,12 @@ func (h *UpsertJobHandler) decorateRequest(ctx context.Context, isDraft bool, id
 
 		req.TotalRecurrences = recurrences
 
-		workflowIDs, errs := provisionWorkflowWithAct(ctx, req, h.conf, client)
+		workflowIDs, errs := provisionWorkflowWithAct(ctx, req, conf, client)
 		if len(errs) != 0 {
 			return errs
 		}
 
-		executionWorkflowID, errs := provisionWorkflowForExec(ctx, req, h.conf, workflowIDs, client)
+		executionWorkflowID, errs := provisionWorkflowForExec(ctx, req, conf, workflowIDs, client)
 		if len(errs) != 0 {
 			return errs
 		}

@@ -7,7 +7,6 @@ require (
 	github.com/crowdstrike/gofalcon v0.4.3-0.20231013182855-e96a02e115d9
 	github.com/go-openapi/runtime v0.26.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/sirupsen/logrus v1.9.3
 	github.com/spaolacci/murmur3 v1.1.0
 )
 
@@ -31,6 +30,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
+	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.mongodb.org/mongo-driver v1.11.3 // indirect
 	go.opentelemetry.io/otel v1.14.0 // indirect
 	go.opentelemetry.io/otel/trace v1.14.0 // indirect

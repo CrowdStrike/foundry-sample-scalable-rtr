@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"math"
 	"net/http"
@@ -10,9 +9,10 @@ import (
 	"strings"
 	"sync"
 
-	fdk "github.com/CrowdStrike/foundry-fn-go"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/Func_Jobs/api/models"
 	"github.com/crowdstrike/gofalcon/falcon/client"
+
+	fdk "github.com/CrowdStrike/foundry-fn-go"
 )
 
 const (
@@ -25,49 +25,26 @@ const (
 	prevPage = -1
 )
 
-// JobsHandler executes a given request to the FaaS function.
-type JobsHandler struct {
-	conf *models.Config
-}
+func getJobsHandler(conf *models.Config) func(ctx context.Context, request fdk.Request) fdk.Response {
+	return func(ctx context.Context, request fdk.Request) fdk.Response {
+		client, err := models.FalconClient(ctx, conf, request.AccessToken)
+		if err != nil {
+			return fdk.ErrResp(fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
+		}
 
-func NewJobsHandler(conf *models.Config) *JobsHandler {
-	return &JobsHandler{
-		conf: conf,
+		jobs, errs := jobDetails(ctx, conf, &request, client)
+		if len(errs) > 0 {
+			return fdk.ErrResp(errs...)
+		}
+
+		return fdk.Response{
+			Code: http.StatusOK,
+			Body: fdk.JSON(jobs),
+		}
 	}
 }
 
-func (h *JobsHandler) Handle(ctx context.Context, request fdk.Request) fdk.Response {
-	response := fdk.Response{}
-	var err error
-
-	client, err := models.FalconClient(ctx, h.conf, request)
-	if err != nil {
-		response.Code = http.StatusInternalServerError
-		response.Errors = append(response.Errors, fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
-		return response
-	}
-
-	jobs, errs := h.jobDetails(ctx, &request, client)
-	if len(errs) != 0 {
-		response.Code = http.StatusInternalServerError
-		response.Errors = errs
-		return response
-	}
-
-	body, err := json.Marshal(jobs)
-	if err != nil {
-		response.Code = http.StatusInternalServerError
-		response.Errors = []fdk.APIError{models.NewAPIError(http.StatusInternalServerError, fmt.Sprintf("failed to marshal the response body with err:%v", err))}
-		return response
-	}
-
-	response.Body = json.RawMessage(body)
-	response.Code = http.StatusOK
-	return response
-}
-
-// jobInfo gets all the jobs for the app.
-func (h *JobsHandler) jobDetails(ctx context.Context, request *fdk.Request, client *client.CrowdStrikeAPISpecification) (*models.JobsResponse, []fdk.APIError) {
+func jobDetails(ctx context.Context, conf *models.Config, request *fdk.Request, client *client.CrowdStrikeAPISpecification) (*models.JobsResponse, []fdk.APIError) {
 	// Default limit set to 10
 	limit := 10
 	var response models.JobsResponse
@@ -132,7 +109,7 @@ func (h *JobsHandler) jobDetails(ctx context.Context, request *fdk.Request, clie
 		}}
 	}
 	searchReq := models.SearchObjectsRequest{
-		Collection: h.conf.JobsCollection,
+		Collection: conf.JobsCollection,
 		Limit:      limit,
 		Offset:     offset,
 		Sort:       fqlSort,
@@ -170,7 +147,7 @@ func (h *JobsHandler) jobDetails(ctx context.Context, request *fdk.Request, clie
 		go func(id string, count int) {
 			defer wg.Done()
 
-			job, errs := jobInfo(ctx, id, h.conf, client)
+			job, errs := jobInfo(ctx, id, conf, client)
 			if len(errs) != 0 {
 				var jobGetErr error
 				jobGetErr = fmt.Errorf("failed to get job: %s id: err: %v", id, errs)
