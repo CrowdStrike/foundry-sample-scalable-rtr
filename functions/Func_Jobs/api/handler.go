@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"log/slog"
-	"os"
 
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/Func_Jobs/api/models"
 	"github.com/crowdstrike/gofalcon/falcon"
@@ -14,7 +13,7 @@ import (
 // NewHandler creates a fdk.Handler to handle all
 func NewHandler(context.Context, *slog.Logger, fdk.SkipCfg) fdk.Handler {
 	conf := models.Config{
-		Cloud:                                   falcon.Cloud(os.Getenv("CS_CLOUD")),
+		Cloud:                                   falcon.Cloud(fdk.FalconClientOpts().Cloud),
 		JobsCollection:                          "Jobs_Info_Scalable_RTR",
 		AuditLogsCollection:                     "Jobs_Audit_Logger_Scalable_RTR",
 		ExecutionNotifierWorkflow:               "Notify status",
