@@ -54,7 +54,7 @@ brew tap crowdstrike/foundry-cli
 brew install foundry
 ```
 
-Run `foundry version` to verify it's installed.
+Run `foundry version` to verify it's installed correctly.
 
 ### Foundry capabilities used
 
