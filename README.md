@@ -9,6 +9,8 @@ This app is one of several App Templates included in Foundry that you can use to
 preconfigured capabilities aligned to its business purpose. Deploy this app from the Templates page with a single click in the Foundry UI, or 
 create an app from this template using the CLI.
 
+Please complete the Foundry Quickstart before deploying this sample. You can find it in Falcon under Foundry > Learn ([US](https://falcon.crowdstrike.com/foundry/learn), [US-2](https://falcon.us-2.crowdstrike.com/foundry/learn), [EU](https://falcon.eu-1.crowdstrike.com/foundry/learn)). 
+
 ## Description
 
 The Scalable RTR sample Foundry app provides a way to orchestrate the verification of files and registry keys
@@ -24,9 +26,35 @@ This app illustrates the following functionality amongst other components:
 
 ### Dependencies
 
-* Foundry CLI
-* Go v1.21+ (needed if modifying functions).  See https://go.dev/learn/ for instructions to install.
-* YARN (needed if modifying UI).  See https://yarnpkg.com/getting-started for instructions to install.
+* Foundry CLI (instructions below)
+* Go v1.21+ (needed if modifying functions). See https://go.dev/learn/ for instructions to install.
+* YARN (needed if modifying UI). See https://yarnpkg.com/getting-started for instructions to install.
+
+#### Install the Foundry CLI 
+
+You can install the Foundry CLI with Scoop on Windows or Homebrew on Linux/macOS. 
+
+**Windows**:
+
+Install [Scoop](https://scoop.sh/). Then, add the Foundry CLI bucket and install the Foundry CLI.
+
+```shell
+scoop bucket add foundry https://github.com/crowdstrike/scoop-foundry-cli.git
+scoop install foundry
+```
+
+Or, you can download the [latest Windows zip file](https://assets.foundry.crowdstrike.com/cli/latest/foundry_Windows_x86_64.zip), expand it, and add the install directory to your PATH environment variable.
+
+**Linux and macOS**:
+
+Install [Homebrew](https://docs.brew.sh/Installation). Then, add the Foundry CLI repository to the list of formulae that Homebrew uses and install the CLI:
+
+```shell
+brew tap crowdstrike/foundry-cli
+brew install foundry
+```
+
+Run `foundry version` to verify it's installed correctly.
 
 ### Foundry capabilities used
 
