@@ -80,7 +80,7 @@ Select the following permissions:
 Deploy it to Foundry:
 
 ```shell
-foundry deploy
+foundry apps deploy
 ```
 
 > [!TIP]
