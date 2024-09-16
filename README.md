@@ -88,7 +88,7 @@ foundry apps deploy
 
 Once the deployment has finished, release the app using the three-dot menu on the right. Next, go to **Foundry** > **App catalog**, find your app, and install it.
 
-Then, open the main menu in the top left and go to **Custom Apps**. You should see your app listed and be able to enter a job. After the job executes, you'll receive an email with the execution information.
+Go to **Custom apps**. You should see your app listed and be able to enter a job. After the job executes, you'll receive an email with the execution information.
 
 ## Basic information
 
