@@ -59,7 +59,7 @@ Run `foundry version` to verify it's installed correctly.
 Clone this sample to your local system, or [download as a zip file](https://github.com/CrowdStrike/foundry-sample-scalable-rtr/archive/refs/heads/main.zip).
 
 ```shell
-git clone https://github.com/mraible/foundry-sample-scalable-rtr
+git clone https://github.com/CrowdStrike/foundry-sample-scalable-rtr
 cd foundry-sample-scalable-rtr
 ```
 
