@@ -90,7 +90,7 @@ Once the deployment has finished, release the app using the three-dot menu on th
 
 Go to **Custom apps**. You should see your app listed and be able to enter a job. After the job executes, you'll receive an email with the execution information.
 
-## Basic information
+## About this sample app
 
 ### Foundry capabilities used
 
