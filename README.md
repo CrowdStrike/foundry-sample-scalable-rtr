@@ -9,7 +9,7 @@ This app is one of several App Templates included in Foundry that you can use to
 preconfigured capabilities aligned to its business purpose. Deploy this app from the Templates page with a single click in the Foundry UI, or 
 create an app from this template using the CLI.
 
-Please complete the Foundry Quickstart before deploying this sample. You can find it in Falcon under **Foundry** > **Learn** ([US](https://falcon.crowdstrike.com/foundry/learn), [US-2](https://falcon.us-2.crowdstrike.com/foundry/learn), [EU](https://falcon.eu-1.crowdstrike.com/foundry/learn)). 
+Please complete the Foundry Quickstart before deploying this sample. You can find it in Falcon under **Foundry** > **Learn** ([US-1](https://falcon.crowdstrike.com/foundry/learn), [US-2](https://falcon.us-2.crowdstrike.com/foundry/learn), [EU](https://falcon.eu-1.crowdstrike.com/foundry/learn)). 
 
 ## Description
 
@@ -133,15 +133,15 @@ Then, open the main menu in the top left and go to **Custom Apps**. You should s
 
 For detailed info about running, deploying and installing custom apps in your CID, see the Falcon Foundry product documentation:
 
-* Overview and setup: [US](https://falcon.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities), [EU-1](https://falcon.eu-1.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities)
-* Deploy an app: [US](https://falcon.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app), [EU-1](https://falcon.eu-1.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app)
-* Create a new app using this app as template: [US](https://falcon.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86), [EU-1](https://falcon.eu-1.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86)
-* Run an app in development mode after deployment: [US](https://falcon.crowdstrike.com/documentation/page/fb88e442/view-and-manage-apps#d5175ae2), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/fb88e442/view-and-manage-apps#d5175ae2), [EU-1](https://falcon.eu-1.crowdstrike.com/documentation/page/fb88e442/view-and-manage-apps#d5175ae2)
-* Work with the Foundry capabilities of an app: [US](https://falcon.crowdstrike.com/documentation/category/u0daabab/app-capabilities), [US-2](https://falcon.us-2.crowdstrike.com/documentation/category/u0daabab/app-capabilities), [EU-1](https://falcon.eu-1.crowdstrike.com/documentation/category/u0daabab/app-capabilities)
+* Overview and setup: [US-1](https://falcon.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities), [EU](https://falcon.eu-1.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities)
+* Deploy an app: [US-1](https://falcon.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app), [EU](https://falcon.eu-1.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app)
+* Create a new app using this app as template: [US-1](https://falcon.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86), [EU](https://falcon.eu-1.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86)
+* Run an app in development mode after deployment: [US-1](https://falcon.crowdstrike.com/documentation/page/fb88e442/view-and-manage-apps#d5175ae2), [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/fb88e442/view-and-manage-apps#d5175ae2), [EU](https://falcon.eu-1.crowdstrike.com/documentation/page/fb88e442/view-and-manage-apps#d5175ae2)
+* Work with the Foundry capabilities of an app: [US-1](https://falcon.crowdstrike.com/documentation/category/u0daabab/app-capabilities), [US-2](https://falcon.us-2.crowdstrike.com/documentation/category/u0daabab/app-capabilities), [EU](https://falcon.eu-1.crowdstrike.com/documentation/category/u0daabab/app-capabilities)
 
 ## Foundry resources
 
-See our product documentation: [US](https://falcon.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry), [US-2](https://falcon.us-2.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry), [EU1](https://falcon.eu-1.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry)
+See our product documentation: [US-1](https://falcon.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry), [US-2](https://falcon.us-2.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry), [EU1](https://falcon.eu-1.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry)
 
 ---
 
