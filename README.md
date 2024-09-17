@@ -9,7 +9,7 @@ This app is one of several App Templates included in Foundry that you can use to
 preconfigured capabilities aligned to its business purpose. Deploy this app from the Templates page with a single click in the Foundry UI, or 
 create an app from this template using the CLI.
 
-Please complete the Foundry Quickstart before deploying this sample. You can find it in Falcon under **Foundry** > **Learn** ([US-1](https://falcon.crowdstrike.com/foundry/learn) | [US-2](https://falcon.us-2.crowdstrike.com/foundry/learn) | [EU](https://falcon.eu-1.crowdstrike.com/foundry/learn)). 
+Please complete the Foundry Quickstart before deploying this sample. You can find it in Falcon under **Foundry** > **Learn**: [US-1](https://falcon.crowdstrike.com/foundry/learn) | [US-2](https://falcon.us-2.crowdstrike.com/foundry/learn) | [EU](https://falcon.eu-1.crowdstrike.com/foundry/learn). 
 
 ## Description
 
