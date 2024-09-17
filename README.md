@@ -63,7 +63,7 @@ git clone https://github.com/CrowdStrike/foundry-sample-scalable-rtr
 cd foundry-sample-scalable-rtr
 ```
 
-Log in to your Foundry instance:
+Log in to Foundry:
 
 ```shell
 foundry login
