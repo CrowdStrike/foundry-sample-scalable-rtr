@@ -129,14 +129,6 @@ Go to **Custom apps**. You should see your app listed and be able to enter a job
     * `Check_if_Registry_key_Value_Exist.yml`: Workflow to invoke the `Check_Registry_Exist` RTR script against a collection of hosts.  Results are written to LogScale.
     * `Notify_status.yml`: Workflow which notifies the `job_history` function to report results of the `Check_if_files_or_registry_key_exist` and `Check_if_Registry_key_Value_Exist.yml`.
 
-## Running, deploying and installing Custom Apps
-
-For detailed info about running, deploying and installing custom apps in your CID, see the Falcon Foundry product documentation:
-
-* Overview and setup: [US-1](https://falcon.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities) | [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities) | [EU](https://falcon.eu-1.crowdstrike.com/documentation/page/f5f7cd69/falcon-console-user-interface-capabilities)
-* Deploy an app: [US-1](https://falcon.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app) | [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app) | [EU](https://falcon.eu-1.crowdstrike.com/documentation/page/ofd46a1c/deploy-an-app)
-* Create a new app using this app as template: [US-1](https://falcon.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86) | [US-2](https://falcon.us-2.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86) | [EU](https://falcon.eu-1.crowdstrike.com/documentation/page/l159717b/create-an-app#c4378b86)
-
 ## Foundry resources
 
 - Foundry documentation: [US-1](https://falcon.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry) | [US-2](https://falcon.us-2.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry) | [EU](https://falcon.eu-1.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry)
