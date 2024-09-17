@@ -77,7 +77,7 @@ Select the following permissions:
 - [x] Run, execute, and test LogScale queries
 - [ ] (optional) Generate mock data to test your app
 
-Deploy it to Foundry:
+Deploy the app to Foundry:
 
 ```shell
 foundry apps deploy
