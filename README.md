@@ -97,7 +97,7 @@ Next, go to **Foundry** > **App catalog**, find your app, and install it. Select
 > [!TIP]
 > If the app doesn't load, reload the page.
 
-You should be able to enter a job. After the job executes, you'll receive an email with the execution information.
+You should be able to create a job and save it. After the job executes, you'll receive an email with the execution information.
 
 ## About this sample app
 
