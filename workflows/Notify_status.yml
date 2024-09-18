@@ -10,11 +10,11 @@ parameters:
             required: true
   conditions:
     definitionID_is_equal_to_parameterized_79b66807:
-      - fields:
-          Trigger.Category.WorkflowExecution.DefinitionID:
-            required: true
-            multiple: true
-            operator: IN
+      fields:
+        Trigger.Category.WorkflowExecution.DefinitionID:
+          required: true
+          multiple: true
+          operator: IN
 trigger:
   next:
     - definitionID_is_equal_to_parameterized_79b66807
