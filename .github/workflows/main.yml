@@ -11,9 +11,9 @@ jobs:
         with:
           go-version: '1.21.x'
       - name: Install Go dependencies
-        working-directory: functions
+        working-directory: .
         run: |
-          cd Func_Jobs
+          cd functions/Func_Jobs
           go get .
           cd ../job_history
           go get .
