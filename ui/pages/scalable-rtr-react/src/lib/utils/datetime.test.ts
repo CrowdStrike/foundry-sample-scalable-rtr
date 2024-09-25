@@ -58,20 +58,20 @@ describe("toZoned method", () => {
     test("Malformed timestamp", () => {
       expect(() => {
         toZoned({ timestamp: "asdf" });
-      }).toThrow(new RangeError("Cannot parse dateTime 'asdf[UTC]'"));
+      }).toThrow(new RangeError("Cannot parse: asdf[UTC]q"));
     });
 
     test("Invalid date", () => {
       expect(() => {
         toZoned({ timestamp: "2023-13-32T25:61" });
-      }).toThrow(new RangeError("Invalid overflowed value 13"));
+      }).toThrow(new RangeError("Invalid isoMonth: 13; must be between 1-12"));
     });
 
     test("Invalid timezone", () => {
       expect(() => {
         toZoned({ timestamp: summerDate, timezone: "Moon/Sea_Of_Tranquility" });
       }).toThrow(
-        new RangeError("Invalid time zone specified: Moon/Sea_Of_Tranquility"),
+        new RangeError("Invalid time zone specified: MOON/SEA_OF_TRANQUILITY"),
       );
     });
   });
