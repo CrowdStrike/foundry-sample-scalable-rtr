@@ -1,5 +1,5 @@
 name: Sample CI
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
           cd ../job_history
           go get .
       - name: Build Go functions
-        run: | 
+        run: |
           go build -C functions/Func_Jobs
           go build -C functions/job_history
       - name: Use Node 20
