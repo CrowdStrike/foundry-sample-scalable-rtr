@@ -22,3 +22,9 @@ stats.html
 *.njsproj
 *.sln
 *.sw?
+
+# Generated files
+.yarnrc.yml
+/.pnp.cjs
+/.pnp.loader.mjs
+/.yarn/
