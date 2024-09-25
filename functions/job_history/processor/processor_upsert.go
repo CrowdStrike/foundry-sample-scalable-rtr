@@ -6,32 +6,33 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/robfig/cron/v3"
+	"log/slog"
 	"net/http"
 	"sort"
 	"strings"
 	"time"
 
-	fdk "github.com/CrowdStrike/foundry-fn-go"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/job_history/csv"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/job_history/pkg"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/job_history/searchc"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/job_history/storagec"
-	"github.com/sirupsen/logrus"
+	"github.com/robfig/cron/v3"
 	"github.com/spaolacci/murmur3"
+
+	fdk "github.com/CrowdStrike/foundry-fn-go"
 )
 
 // UpsertProcessor upserts a job execution.
 type UpsertProcessor struct {
 	falconHost  string
-	logger      logrus.FieldLogger
+	logger      *slog.Logger
 	srchc       searchc.SearchC
 	strgc       storagec.StorageC
 	nowProvider func() time.Time
 }
 
 // NewUpsertProcessor creates a new initialized UpsertProcessor instance.
-func NewUpsertProcessor(host string, srchc searchc.SearchC, strgc storagec.StorageC, logger logrus.FieldLogger, opts ...func(p *UpsertProcessor)) *UpsertProcessor {
+func NewUpsertProcessor(host string, srchc searchc.SearchC, strgc storagec.StorageC, logger *slog.Logger, opts ...func(p *UpsertProcessor)) *UpsertProcessor {
 	p := &UpsertProcessor{
 		falconHost:  host,
 		logger:      logger,
@@ -69,10 +70,10 @@ func (p *UpsertProcessor) Process(ctx context.Context, req fdk.Request) Response
 	}
 
 	jobName, err := wfMeta.jobName()
-	p.logger.Infof("received upsert request for job ID: %s", jobName)
+	p.logger.Info("received upsert request for job", "jobID", jobName)
 	if err != nil {
 		msg := fmt.Sprintf("bad job name provided: %s", err)
-		p.logger.WithField("workflow_meta", wfMeta).Error(msg)
+		p.logger.Error(msg, "workflow_meta", wfMeta)
 		return Response{
 			Body: p.genOutRespJSON(nil, []fdk.APIError{{Code: http.StatusBadRequest, Message: msg}}),
 			Code: http.StatusBadRequest,
@@ -82,7 +83,7 @@ func (p *UpsertProcessor) Process(ctx context.Context, req fdk.Request) Response
 	jobID, err := generateJobID(jobName)
 	if err != nil {
 		msg := fmt.Sprintf("job ID could not be determined: %s", err)
-		p.logger.WithField("job_name", jobName).Error(msg)
+		p.logger.Error(msg, "job_name", jobName)
 		return Response{
 			Body: p.genOutRespJSON(nil, []fdk.APIError{{Code: http.StatusInternalServerError, Message: msg}}),
 			Code: http.StatusInternalServerError,
@@ -92,8 +93,7 @@ func (p *UpsertProcessor) Process(ctx context.Context, req fdk.Request) Response
 	jobMap, err := p.fetchObject(ctx, jobCollection, jobID)
 	if err != nil {
 		msg := fmt.Sprintf("could not fetch job record: %s", err)
-		p.logger.WithField("job_name", jobName).
-			WithField("job_id", jobID).Error(msg)
+		p.logger.Error(msg, "job_name", jobName, "job_id", jobID)
 		return Response{
 			Body: p.genOutRespJSON(nil, []fdk.APIError{{Code: http.StatusInternalServerError, Message: msg}}),
 			Code: http.StatusInternalServerError,
@@ -103,8 +103,7 @@ func (p *UpsertProcessor) Process(ctx context.Context, req fdk.Request) Response
 	jobInstance, err := distillJob(jobMap)
 	if err != nil {
 		msg := fmt.Sprintf("could not distill job record from dictionary: %s", err)
-		p.logger.WithField("job_name", jobName).
-			WithField("job_id", jobID).Error(msg)
+		p.logger.Error(msg, "job_name", jobName, "job_id", jobID)
 		return Response{
 			Body: p.genOutRespJSON(nil, []fdk.APIError{{Code: http.StatusInternalServerError, Message: msg}}),
 			Code: http.StatusInternalServerError,
@@ -262,9 +261,7 @@ func (p *UpsertProcessor) jobExecutionRecord(ctx context.Context, jobID, jobName
 			return "", pkg.JobExecution{}, false, err
 		}
 		newExec = true
-		p.logger.WithField("object_key", jobExecutionKey).
-			WithField("execution_id", wfMeta.ExecutionID).
-			Error("job execution not found, creating")
+		p.logger.Error("job execution not found, creating", "object_key", jobExecutionKey, "execution_id", wfMeta.ExecutionID)
 		execRecordMap = map[string]any{
 			"execution_id": wfMeta.ExecutionID,
 			"id":           jobID,
@@ -294,7 +291,7 @@ func (p *UpsertProcessor) locateJobExecution(ctx context.Context, execID string)
 	return sr.ObjectKeys[0], err
 }
 
-func extractHostsFromLogscale(sr searchc.SearchResponse, l logrus.FieldLogger) []pkg.TargetedHost {
+func extractHostsFromLogscale(sr searchc.SearchResponse, l *slog.Logger) []pkg.TargetedHost {
 	events := sr.Events
 	if len(events) == 0 {
 		return make([]pkg.TargetedHost, 0)
@@ -366,7 +363,7 @@ func extractLogscaleInstall(e map[string]any) (logscaleRecord, bool) {
 	return logscaleRecord{HostName: hostName, Success: "true"}, stdout != ""
 }
 
-func extractLogscaleRemove(e map[string]any, l logrus.FieldLogger) (logscaleRecord, bool) {
+func extractLogscaleRemove(e map[string]any, l *slog.Logger) (logscaleRecord, bool) {
 	hostName := ""
 	ok := false
 	s := ""
@@ -392,7 +389,7 @@ func extractLogscaleRemove(e map[string]any, l logrus.FieldLogger) (logscaleReco
 			if s, ok = v.(string); ok && strings.TrimSpace(s) != "" {
 				rs, err := isRemoveSuccessful(s)
 				if err != nil {
-					l.WithField("key", k).Error(err)
+					l.Error(err.Error(), "key", k)
 					return logscaleRecord{}, false
 				}
 				if rs != "" {
@@ -545,7 +542,7 @@ func (p *UpsertProcessor) genOutRespJSON(g []generateOutputResponseResource, e [
 	r := generateOutputResponse{Errs: e, Resources: g}
 	rJSON, err := json.Marshal(r)
 	if err != nil {
-		p.logger.Errorf("failed to serialize response: %s", err)
+		p.logger.Error("failed to serialize response", "err", err)
 		return nil
 	}
 	return rJSON
@@ -606,7 +603,7 @@ func (p *UpsertProcessor) saveCSV(ctx context.Context, execID string, filteredEv
 	err = p.putObject(ctx, csvCollection, objName, []byte(s))
 	if err != nil {
 		msg := fmt.Sprintf("failed to save csv record: %s", err)
-		p.logger.WithField("step", "csv").Error(msg)
+		p.logger.Error(msg, "step", "csv")
 		return "", err
 	}
 

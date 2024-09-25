@@ -2,60 +2,39 @@ package api
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
 	"sync"
 
-	fdk "github.com/CrowdStrike/foundry-fn-go"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/Func_Jobs/api/models"
 	"github.com/crowdstrike/gofalcon/falcon/client"
+
+	fdk "github.com/CrowdStrike/foundry-fn-go"
 )
 
-// AuditsHandler executes a given request to the FaaS function.
-type AuditsHandler struct {
-	conf *models.Config
-}
+func getAudit(conf *models.Config) func(ctx context.Context, request fdk.Request) fdk.Response {
+	return func(ctx context.Context, request fdk.Request) fdk.Response {
+		client, err := models.FalconClient(ctx, conf, request.AccessToken)
+		if err != nil {
+			return fdk.ErrResp(fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
+		}
 
-func NewAuditsHandler(conf *models.Config) *AuditsHandler {
-	return &AuditsHandler{
-		conf: conf,
+		audits, errs := getAuditDetails(ctx, conf, &request, client)
+		if len(errs) != 0 {
+			return fdk.ErrResp(errs...)
+		}
+
+		return fdk.Response{
+			Code: http.StatusOK,
+			Body: fdk.JSON(audits),
+		}
 	}
-}
-
-func (h *AuditsHandler) Handle(ctx context.Context, request fdk.Request) fdk.Response {
-	response := fdk.Response{}
-	var err error
-
-	client, err := models.FalconClient(ctx, h.conf, request)
-	if err != nil {
-		response.Code = http.StatusInternalServerError
-		response.Errors = append(response.Errors, fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
-		return response
-	}
-
-	audits, errs := h.auditDetails(ctx, &request, client)
-	if len(errs) != 0 {
-		response.Code = http.StatusInternalServerError
-		response.Errors = errs
-		return response
-	}
-
-	body, err := json.Marshal(audits)
-	if err != nil {
-		response.Code = http.StatusInternalServerError
-		response.Errors = []fdk.APIError{models.NewAPIError(http.StatusInternalServerError, fmt.Sprintf("failed to marshal the response body with err:%v", err))}
-		return response
-	}
-	response.Body = json.RawMessage(body)
-	response.Code = http.StatusOK
-	return response
 }
 
 // jobInfo gets all the jobs for the app.
-func (h *AuditsHandler) auditDetails(ctx context.Context, request *fdk.Request, client *client.CrowdStrikeAPISpecification) (*models.AuditResponse, []fdk.APIError) {
+func getAuditDetails(ctx context.Context, conf *models.Config, request *fdk.Request, client *client.CrowdStrikeAPISpecification) (*models.AuditResponse, []fdk.APIError) {
 	// Default limit set to 10
 	limit := 10
 	var response models.AuditResponse
@@ -140,7 +119,7 @@ func (h *AuditsHandler) auditDetails(ctx context.Context, request *fdk.Request, 
 		}}
 	}
 	searchReq := models.SearchObjectsRequest{
-		Collection: h.conf.AuditLogsCollection,
+		Collection: conf.AuditLogsCollection,
 		Limit:      limit,
 		Offset:     offset,
 		Sort:       fqlSort,
@@ -175,7 +154,7 @@ func (h *AuditsHandler) auditDetails(ctx context.Context, request *fdk.Request, 
 		go func(id string, count int) {
 			defer wg.Done()
 
-			audit, errs := auditInfo(ctx, id, h.conf, client)
+			audit, errs := auditInfo(ctx, id, conf, client)
 			if len(errs) != 0 {
 				var jobGetErr error
 				jobGetErr = fmt.Errorf("failed to get job: %s id: err: %v", id, errs)

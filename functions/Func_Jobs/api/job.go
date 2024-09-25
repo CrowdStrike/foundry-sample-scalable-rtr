@@ -2,80 +2,48 @@ package api
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 
-	fdk "github.com/CrowdStrike/foundry-fn-go"
 	"github.com/Crowdstrike/foundry-sample-scalable-rtr/functions/Func_Jobs/api/models"
 	"github.com/crowdstrike/gofalcon/falcon/client"
+
+	fdk "github.com/CrowdStrike/foundry-fn-go"
 )
 
 const queryIDParam = "id"
 
-// JobHandler executes a given request to the FaaS function.
-type JobHandler struct {
-	conf *models.Config
-}
-
-func NewJobHandler(conf *models.Config) *JobHandler {
-	return &JobHandler{
-		conf: conf,
-	}
-}
-
-func (h *JobHandler) Handle(ctx context.Context, request fdk.Request) fdk.Response {
-	response := fdk.Response{}
-	if request.Params.Query == nil {
-		response.Code = http.StatusBadRequest
-		response.Errors = append(response.Errors, fdk.APIError{Code: http.StatusBadRequest, Message: "Request does not have query params"})
-		return response
-	}
-
-	queryParams := request.Params.Query[queryIDParam]
-	if len(queryParams) != 1 {
-		response.Code = http.StatusBadRequest
-		response.Errors = append(response.Errors, fdk.APIError{Code: http.StatusBadRequest, Message: fmt.Sprintf("query params %s length: %d is incorrect", queryIDParam, len(queryIDParam))})
-		return response
-	}
-
-	client, err := models.FalconClient(ctx, h.conf, request)
-	if err != nil {
-		response.Code = http.StatusInternalServerError
-		response.Errors = append(response.Errors, fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
-		return response
-	}
-
-	job, errs := h.job(ctx, queryParams[0], client)
-	if len(errs) != 0 {
-		if strings.Contains(errs[0].Message, "not found") {
-			response.Code = http.StatusNotFound
+func getJobHandler(conf *models.Config) func(ctx context.Context, request fdk.Request) fdk.Response {
+	return func(ctx context.Context, request fdk.Request) fdk.Response {
+		if request.Params.Query == nil {
+			return fdk.ErrResp(fdk.APIError{Code: http.StatusBadRequest, Message: "Request does not have query params"})
 		}
-		response.Errors = append(response.Errors, errs...)
-		return response
-	}
 
-	body, err := json.Marshal(job)
-	if err != nil {
-		response = fdk.Response{
-			Code: http.StatusInternalServerError,
-			Errors: []fdk.APIError{
-				{Code: http.StatusInternalServerError, Message: "failed marshalling response body"},
-			},
+		queryParams := request.Params.Query[queryIDParam]
+		if len(queryParams) != 1 {
+			return fdk.ErrResp(fdk.APIError{Code: http.StatusBadRequest, Message: fmt.Sprintf("query params %s length: %d is incorrect", queryIDParam, len(queryIDParam))})
 		}
-		return response
+
+		client, err := models.FalconClient(ctx, conf, request.AccessToken)
+		if err != nil {
+			return fdk.ErrResp(fdk.APIError{Code: http.StatusBadRequest, Message: "fail to initialize client"})
+		}
+
+		job, errs := getJob(ctx, conf, queryParams[0], client)
+		if len(errs) != 0 {
+			return fdk.ErrResp(errs...)
+		}
+
+		return fdk.Response{
+			Code: http.StatusOK,
+			Body: fdk.JSON(job),
+		}
 	}
-
-	response.Body = json.RawMessage(body)
-	response.Code = http.StatusOK
-
-	return response
 }
 
 // job saves a job to custom storage and may attempt to run or schedule the job if requested.
-func (h *JobHandler) job(ctx context.Context, id string, client *client.CrowdStrikeAPISpecification) (*models.JobResponse, []fdk.APIError) {
-	job, errs := jobInfo(ctx, id, h.conf, client)
+func getJob(ctx context.Context, conf *models.Config, id string, client *client.CrowdStrikeAPISpecification) (*models.JobResponse, []fdk.APIError) {
+	job, errs := jobInfo(ctx, id, conf, client)
 	if len(errs) != 0 {
 		return nil, errs
 	}
