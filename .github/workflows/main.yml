@@ -19,12 +19,13 @@ jobs:
           go get .
       - name: Build Go functions
         run: | 
-          go build -C functions/Func_Jobs -v
-          go build -C functions/job_history -v
+          go build -C functions/Func_Jobs
+          go build -C functions/job_history
       - name: Use Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'yarn'
       - name: Run yarn install
         uses: borales/actions-yarn@v5
         with:
