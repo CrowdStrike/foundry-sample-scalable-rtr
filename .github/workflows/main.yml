@@ -26,6 +26,7 @@ jobs:
         with:
           node-version: 20
           cache: 'yarn'
+          cache-dependency-path: ui/pages/scalable-rtr-react
       - name: Run yarn install
         uses: borales/actions-yarn@v5
         with:
