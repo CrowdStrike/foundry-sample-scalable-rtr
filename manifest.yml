@@ -1,5 +1,6 @@
-name: Scalable RTR
-description: Orchestrates the verification of files and registry keys across Windows systems by targeting specific hosts 
+app_id: 0edea4913f5e4df4921b4b6ba2caa825
+name: Scalable RTR by mraible
+description: Orchestrates the verification of files and registry keys across Windows systems by targeting specific hosts
 logo: ""
 manifest_version: "2023-05-09"
 ignored:
@@ -24,6 +25,7 @@ ui:
     extensions: []
     pages:
         scalable-rtr-react:
+            id: 2f87fa23637c44af94db777d89ea3bd2
             name: scalable-rtr-react
             description: A sample app built with React
             path: ui/pages/scalable-rtr-react/dist
@@ -42,6 +44,7 @@ ui:
             permissions: []
     dashboards: {}
     navigation:
+        id: 84b77a974a9146bc8a85e8892a291d45
         links:
             - path: /
               name: All Jobs
@@ -57,7 +60,8 @@ ui:
               ref: pages.scalable-rtr-react
 api_integrations: []
 rtr_scripts:
-    - name: check_file_or_registry_exist
+    - id: 3d3f8d485ceb4e618cabedd5cf6d4006
+      name: check_file_or_registry_exist
       platform: Windows
       description: Check if the file or registry exist.
       path: rtr-scripts/check_file_or_registry_exist
@@ -69,7 +73,8 @@ rtr_scripts:
         tags: []
         input_schema: input_schema.json
         output_schema: output_schema.json
-    - name: Check_Registry_Exist
+    - id: a1c51d07586d4fe3bbc170d1c7730416
+      name: Check_Registry_Exist
       platform: Windows
       description: Check if registry key exist
       path: rtr-scripts/Check_Registry_Exist
@@ -117,7 +122,8 @@ auth:
     permissions: {}
     roles: []
 functions:
-    - name: Func_Jobs
+    - id: 9efa3386add848ec8f95458ffa67f3fd
+      name: Func_Jobs
       config: null
       description: Create an function to create, update, query and audit the jobs.
       path: functions/Func_Jobs
@@ -154,13 +160,15 @@ functions:
           request_schema: null
           response_schema: null
           workflow_integration:
+            id: 6af47017c5dc4420909d92d6a82820fa
             disruptive: false
             system_action: false
             tags:
                 - Rapid Response
           permissions: []
       language: go
-    - name: job_history
+    - id: d82b9da584054aa58be93644ed1dd08b
+      name: job_history
       config: null
       description: Job histories and executions
       path: functions/job_history
@@ -181,6 +189,7 @@ functions:
           request_schema: input_schema.json
           response_schema: null
           workflow_integration:
+            id: afcdd1a791ad4053bf2c7f08a3d261aa
             disruptive: false
             system_action: false
             tags:
@@ -188,15 +197,19 @@ functions:
           permissions: []
       language: go
 workflows:
-    - name: Check if files or registry key exist
+    - id: 17f63ddf99ff423abebb94e16f906470
+      name: Check if files or registry key exist
       path: workflows/Check_if_files_or_registry_key_exist.yml
-    - name: Notify status
+    - id: c1506ad873254bcf9303e22bb823bc1d
+      name: Notify status
       path: workflows/Notify_status.yml
-    - name: Check_If_Registry_key_Value_Exist
+    - id: ee23f1fb364946c183319a72d2d2718a
+      name: Check_If_Registry_key_Value_Exist
       path: workflows/Check_If_Registry_key_Value_Exist.yml
 logscale:
     saved_searches:
-        - name: Query By WorkflowRootExecutionID
+        - id: 6a33fa01e1474904be52175220f3d12c
+          name: Query By WorkflowRootExecutionID
           description: Queries entries by WorkflowRootExecutionID for each job.
           query_path: saved-searches/Query_By_WorkflowRootExecutionID/query.txt
           query_params:
