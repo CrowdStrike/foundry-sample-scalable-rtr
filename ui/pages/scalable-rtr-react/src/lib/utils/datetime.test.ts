@@ -58,7 +58,7 @@ describe("toZoned method", () => {
     test("Malformed timestamp", () => {
       expect(() => {
         toZoned({ timestamp: "asdf" });
-      }).toThrow(new RangeError("Cannot parse: asdf[UTC]q"));
+      }).toThrow(new RangeError("Cannot parse: asdf[UTC]"));
     });
 
     test("Invalid date", () => {
