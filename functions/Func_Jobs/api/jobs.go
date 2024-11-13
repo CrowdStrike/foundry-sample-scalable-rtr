@@ -80,7 +80,7 @@ func (h *JobsHandler) jobDetails(ctx context.Context, request *fdk.Request, clie
 		Limit: limit,
 	}
 
-	limitParam := request.Params.Query.Get(queryLimit)
+	limitParam := request.Queries.Get(queryLimit)
 	if limitParam != "" {
 		limit, err = strconv.Atoi(limitParam)
 		if err != nil {
@@ -92,8 +92,8 @@ func (h *JobsHandler) jobDetails(ctx context.Context, request *fdk.Request, clie
 		}
 	}
 
-	nOffset := request.Params.Query.Get(queryPrevOffset)
-	qOffset := request.Params.Query.Get(queryNextOffset)
+	nOffset := request.Queries.Get(queryPrevOffset)
+	qOffset := request.Queries.Get(queryNextOffset)
 
 	if qOffset != "" && nOffset != "" {
 		return &response, []fdk.APIError{{
