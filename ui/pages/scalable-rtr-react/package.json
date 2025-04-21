@@ -21,7 +21,7 @@
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "7.5.0",
     "react-select": "^5.10.1",
-    "temporal-polyfill": "^0.2.5",
+    "temporal-polyfill": "^0.3.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

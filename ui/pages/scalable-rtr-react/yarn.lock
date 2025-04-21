@@ -3734,17 +3734,17 @@ tailwindcss@^3.4.11:
     resolve "^1.22.8"
     sucrase "^3.35.0"
 
-temporal-polyfill@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/temporal-polyfill/-/temporal-polyfill-0.2.5.tgz#0796c40a50754c69ec0f9a2db3f6c582b9721aaf"
-  integrity sha512-ye47xp8Cb0nDguAhrrDS1JT1SzwEV9e26sSsrWzVu+yPZ7LzceEcH0i2gci9jWfOfSCCgM3Qv5nOYShVUUFUXA==
+temporal-polyfill@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/temporal-polyfill/-/temporal-polyfill-0.3.0.tgz#7fe90e913ac5ec8e0d508fb50d04dd7a74cec23e"
+  integrity sha512-qNsTkX9K8hi+FHDfHmf22e/OGuXmfBm9RqNismxBrnSmZVJKegQ+HYYXT+R7Ha8F/YSm2Y34vmzD4cxMu2u95g==
   dependencies:
-    temporal-spec "^0.2.4"
+    temporal-spec "0.3.0"
 
-temporal-spec@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/temporal-spec/-/temporal-spec-0.2.4.tgz#7eb10447a62429ffaaa80b42b869b138ae306a75"
-  integrity sha512-lDMFv4nKQrSjlkHKAlHVqKrBG4DyFfa9F74cmBZ3Iy3ed8yvWnlWSIdi4IKfSqwmazAohBNwiN64qGx4y5Q3IQ==
+temporal-spec@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/temporal-spec/-/temporal-spec-0.3.0.tgz#8c4210c575fb28ba0a1c2e02ad68d1be5956a11f"
+  integrity sha512-n+noVpIqz4hYgFSMOSiINNOUOMFtV5cZQNCmmszA6GiVFVRt3G7AqVyhXjhCSmowvQn+NsGn+jMDMKJYHd3bSQ==
 
 thenify-all@^1.0.0:
   version "1.6.0"
