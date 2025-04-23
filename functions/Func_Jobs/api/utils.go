@@ -8,6 +8,7 @@ import (
 	"io"
 	"math"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -245,7 +246,13 @@ func search(ctx context.Context, req models.SearchObjectsRequest, client *client
 	sor := models.SearchObjectsResponse{}
 	if pagination := payload.Meta.Pagination; pagination != nil {
 		sor.Total = int64PAsInt(pagination.Total)
-		sor.Offset = int32PAsInt(pagination.Offset)
+		sor.Offset, err = strconv.Atoi(pagination.Offset)
+		if err != nil {
+			return models.SearchObjectsResponse{}, []fdk.APIError{{
+				Code:    http.StatusInternalServerError,
+				Message: err.Error(),
+			}}
+		}
 	}
 	res := payload.Resources
 	if len(res) == 0 {
@@ -406,11 +413,11 @@ func provisionWorkflowForExec(ctx context.Context, req *models.Job, conf *models
 	reqBody.Parameters.Activities = &model.ParameterActivityProvisionParameters{}
 	reqBody.Parameters.Activities.Configuration = append(reqBody.Parameters.Activities.Configuration, &emailNotification)
 
-	provisionReq := workflows.NewProvisionSystemDefinitionParams()
+	provisionReq := workflows.NewProvisionParams()
 	provisionReq.SetBody(reqBody)
 	provisionReq.Context = ctx
 
-	resp, err := client.Workflows.ProvisionSystemDefinition(provisionReq)
+	resp, err := client.Workflows.Provision(provisionReq)
 	if err != nil {
 		return "", []fdk.APIError{{
 			Code:    http.StatusInternalServerError,
@@ -524,10 +531,10 @@ func provisionWorkflowWithAct(ctx context.Context, req *models.Job, conf *models
 		name := req.Name + " RunNow"
 		reqBody.Name = &name
 
-		provisionReq := workflows.NewProvisionSystemDefinitionParams()
+		provisionReq := workflows.NewProvisionParams()
 		provisionReq.SetBody(reqBody)
 		provisionReq.SetContext(ctx)
-		resp, err := client.Workflows.ProvisionSystemDefinition(provisionReq)
+		resp, err := client.Workflows.Provision(provisionReq)
 		if err != nil {
 			return nil, []fdk.APIError{{
 				Code:    http.StatusInternalServerError,
@@ -571,10 +578,10 @@ func provisionWorkflowWithAct(ctx context.Context, req *models.Job, conf *models
 
 		name := req.Name + " Schedule"
 		reqBody.Name = &name
-		provisionReq := workflows.NewProvisionSystemDefinitionParams()
+		provisionReq := workflows.NewProvisionParams()
 		provisionReq.SetBody(reqBody)
 		provisionReq.SetContext(ctx)
-		resp, err := client.Workflows.ProvisionSystemDefinition(provisionReq)
+		resp, err := client.Workflows.Provision(provisionReq)
 		if err != nil {
 			return nil, []fdk.APIError{{
 				Code:    http.StatusInternalServerError,
