@@ -22,7 +22,7 @@
     "react-router-dom": "7.5.1",
     "react-select": "^5.10.1",
     "temporal-polyfill": "^0.2.5",
-    "zod": "^3.23.8"
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
