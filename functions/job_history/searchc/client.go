@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/crowdstrike/gofalcon/falcon/client/saved_searches"
+	"github.com/crowdstrike/gofalcon/falcon/client/foundry_logscale"
 	"github.com/crowdstrike/gofalcon/falcon/models"
 	"github.com/eapache/go-resiliency/retrier"
 	"github.com/sirupsen/logrus"
@@ -23,7 +23,7 @@ type SearchC interface {
 
 // Client is the client.
 type Client struct {
-	c          saved_searches.ClientService
+	c          foundry_logscale.ClientService
 	falconHost string
 	logger     logrus.FieldLogger
 }
@@ -31,7 +31,7 @@ type Client struct {
 var _ SearchC = (*Client)(nil)
 
 // NewClient returns a new search client.
-func NewClient(c saved_searches.ClientService, falconHost string, logger logrus.FieldLogger) *Client {
+func NewClient(c foundry_logscale.ClientService, falconHost string, logger logrus.FieldLogger) *Client {
 	return &Client{
 		c:          c,
 		falconHost: falconHost,
@@ -67,7 +67,7 @@ func (f *Client) Search(ctx context.Context, req SearchRequest) (SearchResponse,
 func (f *Client) startSearchJob(ctx context.Context, req SearchRequest) (string, error) {
 	boolFalse := false
 	mode := modeAsync
-	params := saved_searches.NewExecuteParams()
+	params := foundry_logscale.NewExecuteParams()
 	params.Body = &models.ApidomainSavedSearchExecuteRequestV1{
 		Name:       "Query By WorkflowRootExecutionID",
 		Parameters: req.SearchParams,
@@ -201,7 +201,7 @@ func (f *Client) fetchSearchResultsPage(ctx context.Context, jobID string, maxPo
 func (f *Client) fetchSearchResultsCall(ctx context.Context, jobID string, offset int) (savedSearchFetchResource, error) {
 	limit := "1000"
 	os := strconv.Itoa(offset)
-	params := saved_searches.NewResultParams()
+	params := foundry_logscale.NewResultParams()
 	params.Context = ctx
 	params.JobID = jobID
 	params.Limit = &limit
