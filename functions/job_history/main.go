@@ -164,7 +164,7 @@ func newFalconClient(ctx context.Context, token string) (*client.CrowdStrikeAPIS
 }
 
 func newSearchClient(fc *client.CrowdStrikeAPISpecification) searchc.SearchC {
-	return searchc.NewClient(fc.SavedSearches, host, logger)
+	return searchc.NewClient(fc.FoundryLogscale, host, logger)
 }
 
 func newStorageClient(fc *client.CrowdStrikeAPISpecification, token string) storagec.StorageC {
