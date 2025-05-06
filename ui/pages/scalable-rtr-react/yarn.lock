@@ -2228,12 +2228,12 @@ fraction.js@^4.3.7:
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.3.7.tgz#06ca0085157e42fda7f9e726e79fefc4068840f7"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
 
-framer-motion@^12.9.6:
-  version "12.9.6"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.9.6.tgz#84869b9a409bb572d37a4d4fcb027bbdf088f8dc"
-  integrity sha512-IIFf8lGl9ZrbzPvm4u5txyUXiS4x8lRxKWIQ4EFU1bC0aaUTNBM8PJIWR7S9DotBDlBqC7FNsxpDmdJNJzU5Iw==
+framer-motion@^12.10.0:
+  version "12.10.0"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.10.0.tgz#1b49984ba1a687978ea0671cc6ce907da11515d8"
+  integrity sha512-fce/SPS/lrIHYLGfRNytdvzwotc43hBGnEGjXAS304xB+uX9iAm0BpPDx9SuO3TatJkQMm9mglVu94wIPdOTjw==
   dependencies:
-    motion-dom "^12.9.6"
+    motion-dom "^12.10.0"
     motion-utils "^12.9.4"
     tslib "^2.4.0"
 
@@ -3006,10 +3006,10 @@ minimatch@^9.0.4:
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-7.1.2.tgz#93a9626ce5e5e66bd4db86849e7515e92340a707"
   integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
 
-motion-dom@^12.9.6:
-  version "12.9.6"
-  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.9.6.tgz#c13125bc09846e0b41176c3b1cfdf7c709edccd7"
-  integrity sha512-IK9pm5zU8BIp3FCoUGF3T7AHVLVOlXxlwco/bIbcnpBtyYb2gDQhdOzUh2KSDJVjYl1MZ9vdq8tnFTTahX2lfg==
+motion-dom@^12.10.0:
+  version "12.10.0"
+  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.10.0.tgz#9e71317c1e64d01cc702083ccd7263cb1fda2f74"
+  integrity sha512-TbRFEjQmRIDEFXJFIHfvM3VW8PuQ8bSWwwYxWA5Elq+GCghzqYUQ1FDQK/K6PmtmOoLiQY3ttJE6CrOedRrGgw==
   dependencies:
     motion-utils "^12.9.4"
 
