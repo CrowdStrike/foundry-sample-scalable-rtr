@@ -1,4 +1,4 @@
-import { SafeParseReturnType } from "zod";
+import { ZodSafeParseError, ZodSafeParseSuccess } from "zod";
 import FalconApi, { LocalData } from "@crowdstrike/foundry-js";
 
 import { FAAS } from "@/lib/constants";
@@ -8,7 +8,6 @@ import {
   createJobResponseSchema,
 } from "@/lib/validations/api-validation";
 import {
-  AllSteps,
   BuildQuerySchema,
   ChooseHostSchema,
   JobDetailsSchema,
@@ -17,11 +16,16 @@ import {
 import { asPlainTime, asRFC3339, fromParts } from "@/lib/utils/datetime";
 import { convertJSONToCron } from "@/lib/utils/cron-parser";
 
+// Define a custom type to replace SafeParseReturnType
+type SafeParseReturnType<Output> =
+  | ZodSafeParseSuccess<Output>
+  | ZodSafeParseError<any>;
+
 interface ParsedZodData {
-  parsedJobDetailsData: SafeParseReturnType<AllSteps, JobDetailsSchema>;
-  parsedBuildQueryData: SafeParseReturnType<AllSteps, BuildQuerySchema>;
-  parsedHostSchemaData: SafeParseReturnType<AllSteps, ChooseHostSchema>;
-  parsedScheduleData: SafeParseReturnType<AllSteps, ScheduleSchema>;
+  parsedJobDetailsData: SafeParseReturnType<JobDetailsSchema>;
+  parsedBuildQueryData: SafeParseReturnType<BuildQuerySchema>;
+  parsedHostSchemaData: SafeParseReturnType<ChooseHostSchema>;
+  parsedScheduleData: SafeParseReturnType<ScheduleSchema>;
 }
 
 export interface CreateJobArgs {
