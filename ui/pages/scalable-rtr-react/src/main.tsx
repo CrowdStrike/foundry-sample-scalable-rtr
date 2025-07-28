@@ -1,5 +1,5 @@
 import { LazyMotion, domAnimation } from "framer-motion";
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, JSX } from "react";
 import ReactDOM from "react-dom/client";
 import {
   Navigate,
