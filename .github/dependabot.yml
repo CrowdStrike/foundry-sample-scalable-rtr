@@ -4,13 +4,22 @@ updates:
     directory: "/ui/pages/scalable-rtr-react/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "14:00"
+      timezone: "UTC"
   - package-ecosystem: "gomod"
     directories:
       - "/functions/Func_Jobs/"
       - "/functions/job_history/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "14:00"
+      timezone: "UTC"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "14:00"
+      timezone: "UTC"
