@@ -6,7 +6,7 @@ interface StepStatus {
   isLastStep: boolean;
 }
 
-interface CreateJobContext {
+interface CreateJobContextType {
   state: WizardState;
   dispatch: (action: ReducerAction) => void;
   getStepStatus: (stepName: Steps) => StepStatus;
@@ -26,7 +26,7 @@ export const defaultState: WizardState = {
   direction: null,
 };
 
-export const CreateJobContext = createContext<CreateJobContext>({
+export const CreateJobContext = createContext<CreateJobContextType>({
   state: defaultState,
   dispatch: () => {
     /** This will get replaced when update the value at mount */
@@ -174,7 +174,6 @@ export function reducer(_: WizardState, action: ReducerAction): WizardState {
         direction: action.direction,
       };
     default:
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       throw `Unhandled action type: ${action.type}`;
   }
 }

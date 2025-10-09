@@ -97,7 +97,7 @@ const timeSchema = (errorMessage: string) => {
 /**
  * Frequency Type schema
  */
-const frequencyTypeSchema = z.union([
+export const frequencyTypeSchema = z.union([
   z.literal("hourly"),
   z.literal("daily"),
   z.literal("weekly"),

@@ -141,7 +141,7 @@ function EditJob() {
             state: { jobName: formData.jobName, action: "edit" },
           });
           setLoadingState(false);
-        } catch (err) {
+        } catch {
           setLoadingState(false);
           throw "Cannot submit form with invalid data.";
         }
