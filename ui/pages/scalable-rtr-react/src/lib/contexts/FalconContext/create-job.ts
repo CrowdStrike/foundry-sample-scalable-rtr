@@ -64,7 +64,7 @@ function createJob(falcon: FalconApi<LocalData>) {
           query_type: data.queryType === "file" ? "file" : "registryKey",
           query_file_paths: data.filePaths?.map((path) => path.path) ?? [],
           registry_keys:
-            data.queryType === "file" ? [] : data.registryKeyPairs ?? [],
+            data.queryType === "file" ? [] : (data.registryKeyPairs ?? []),
         };
 
         let schedule = null;

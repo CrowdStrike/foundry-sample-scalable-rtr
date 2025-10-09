@@ -2,11 +2,8 @@ import { z } from "zod";
 
 import { RTRCreateJobPayload, RTRJob } from "@/mock/schemas/rtr-schemas";
 
-const jobPayloadCreation = RTRCreateJobPayload;
-const job = RTRJob;
-
-export type JobPayload = z.infer<typeof jobPayloadCreation>;
-export type Job = z.infer<typeof job>;
+export type JobPayload = z.infer<typeof RTRCreateJobPayload>;
+export type Job = z.infer<typeof RTRJob>;
 
 export const generalPostMessage = z.object({
   method: z.string(),

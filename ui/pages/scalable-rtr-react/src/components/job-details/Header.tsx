@@ -51,10 +51,10 @@ function Header({ job }: Props) {
                   .map((group) => group.name)
                   .join(", ")}`
               : Array.isArray(hosts) && hosts.length > 0
-              ? `Targeted host(s): ${hosts
-                  .map((host) => host.hostname)
-                  .join(", ")}`
-              : null}
+                ? `Targeted host(s): ${hosts
+                    .map((host) => host.hostname)
+                    .join(", ")}`
+                : null}
           </p>
         ) : null}
       </div>
