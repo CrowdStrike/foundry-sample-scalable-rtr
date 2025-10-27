@@ -21,8 +21,6 @@ ignored:
     - ui/(extensions|pages)/scalable-rtr-react/index\.html
     - e2e
     - e2e/.+
-    - functions/.*/venv
-    - functions/.*/venv/.+
 ui:
     homepage: pages.scalable-rtr-react
     extensions: []
