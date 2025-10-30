@@ -1,9 +1,6 @@
-import { test as teardown } from '@playwright/test';
-import { ScalableRTRHomePage } from '../src/pages/ScalableRTRHomePage';
+import { test as teardown } from '../src/fixtures';
 
-teardown('uninstall Scalable RTR app', async ({ page }) => {
-  const scalableRTRHomePage = new ScalableRTRHomePage(page);
-
+teardown('uninstall Scalable RTR app', async ({ appCatalogPage, appName }) => {
   // Clean up by uninstalling the app after all tests complete
-  await scalableRTRHomePage.uninstallApp();
+  await appCatalogPage.uninstallApp(appName);
 });
