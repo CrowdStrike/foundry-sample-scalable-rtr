@@ -19,6 +19,8 @@ ignored:
     - ui/(extensions|pages)/.*?/vite\.config\.ts
     - ui/(extensions|pages)/*\.gz
     - ui/(extensions|pages)/scalable-rtr-react/index\.html
+    - e2e
+    - e2e/.+
 ui:
     homepage: pages.scalable-rtr-react
     extensions: []
