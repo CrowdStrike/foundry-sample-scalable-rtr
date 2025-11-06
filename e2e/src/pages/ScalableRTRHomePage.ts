@@ -340,71 +340,59 @@ export class ScalableRTRHomePage extends BasePage {
   }
 
   /**
-   * Access existing installed app
+   * Access existing installed app via Custom Apps menu
    */
   private async accessExistingApp(appName: string): Promise<void> {
-    // Try Custom Apps navigation first (most likely path)
-    try {
-      await this.navigateViaCustomApps();
-      return;
-    } catch (error) {
-      this.logger.warn('Custom apps navigation failed, trying App manager approach');
-    }
-
-    // Fallback: Try App manager approach
-    await this.navigateToPath('/foundry/app-manager', 'App manager page');
-
-    const appLink = this.page.getByRole('link', { name: appName, exact: true });
-
-    try {
-      await expect(appLink).toBeVisible({ timeout: 3000 });
-      this.logger.success(`Found app in manager: ${appName}`);
-      await appLink.click();
-
-      // Click "View in catalog"
-      const viewCatalogLink = this.page.getByRole('link', { name: 'View in catalog' });
-      await expect(viewCatalogLink).toBeVisible({ timeout: 5000 });
-      await viewCatalogLink.click();
-
-      // Click "Open app"
-      const openButton = this.page.getByRole('button', { name: 'Open app' });
-      await expect(openButton).toBeVisible({ timeout: 5000 });
-      await openButton.click();
-      this.logger.success('Accessed existing app successfully');
-
-    } catch (error) {
-      throw new Error(`App "${appName}" not found. Please ensure it's deployed and installed.`);
-    }
+    await this.navigateViaCustomApps();
   }
 
   /**
    * Navigate via Custom apps menu
    */
   private async navigateViaCustomApps(): Promise<void> {
-    this.logger.step('Attempting navigation via Custom apps menu');
+    return RetryHandler.withPlaywrightRetry(
+      async () => {
+        this.logger.step('Attempting navigation via Custom apps menu');
 
-    await this.navigateToPath('/foundry/home', 'Foundry home page');
+        await this.navigateToPath('/foundry/home', 'Foundry home page');
 
-    const menuButton = this.page.getByRole('button', { name: 'Menu' });
-    await expect(menuButton).toBeVisible({ timeout: 10000 });
-    await menuButton.click();
+        // Open hamburger menu
+        const menuButton = this.page.getByRole('button', { name: 'Menu' });
+        await this.smartClick(menuButton, 'Menu button');
 
-    const customAppsButton = this.page.getByRole('button', { name: 'Custom apps' });
-    await expect(customAppsButton).toBeVisible({ timeout: 10000 });
-    await customAppsButton.click();
+        // Click Custom apps
+        const customAppsButton = this.page.getByRole('button', { name: 'Custom apps' });
+        await this.smartClick(customAppsButton, 'Custom apps button');
 
-    const appName = config.appName;
-    const appButton = this.page.getByRole('button', { name: appName, exact: false }).first();
+        // Wait for menu to expand
+        await this.waiter.delay(500);
 
-    await expect(appButton).toBeVisible({ timeout: 5000 });
+        // Find the app button (this expands the submenu)
+        const appName = config.appName;
+        const appButton = this.page.getByRole('button', { name: appName, exact: false }).first();
 
-    // Click the app link
-    const appLinks = this.page.getByRole('link').filter({ hasText: /all jobs|scalable rtr/i });
-    const firstLink = appLinks.first();
-    await expect(firstLink).toBeVisible({ timeout: 5000 });
-    await firstLink.click();
+        if (await this.elementExists(appButton, 3000)) {
+          await this.smartClick(appButton, `App '${appName}' button`);
+          await this.waiter.delay(500);
 
-    this.logger.success('Successfully navigated via Custom apps menu');
+          // Now click the actual link to navigate to the app
+          const appLink = this.page.getByRole('link').filter({ hasText: /scalable.*rtr|all jobs/i }).first();
+
+          if (await this.elementExists(appLink, 3000)) {
+            await this.smartClick(appLink, 'App link');
+
+            // Wait for navigation to complete
+            await this.page.waitForURL(/\/foundry\/page\//, { timeout: 10000 });
+
+            this.logger.success('Successfully navigated via Custom apps menu');
+            return;
+          }
+        }
+
+        throw new Error(`App '${appName}' not found in Custom Apps menu`);
+      },
+      'Navigate via Custom Apps'
+    );
   }
 
   /**
