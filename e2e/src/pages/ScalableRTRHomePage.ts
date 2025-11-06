@@ -13,9 +13,8 @@ export class ScalableRTRHomePage extends BasePage {
   }
 
   protected getPagePath(): string {
-    // Note: Actual path will be dynamic based on deployed app
-    // This is a placeholder - we'll navigate via Custom Apps menu instead
-    throw new Error('Direct path navigation not supported. Use navigateToApp() or navigateToInstalledApp() instead.');
+    // App has dynamic path based on deployment - use navigateToInstalledApp() instead
+    return '';
   }
 
   protected async verifyPageLoaded(): Promise<void> {
