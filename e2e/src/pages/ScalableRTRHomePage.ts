@@ -339,10 +339,41 @@ export class ScalableRTRHomePage extends BasePage {
   }
 
   /**
-   * Access existing installed app via Custom Apps menu
+   * Access existing installed app via Custom Apps menu (with fallback to App manager)
    */
   private async accessExistingApp(appName: string): Promise<void> {
-    await this.navigateViaCustomApps();
+    // Try Custom Apps navigation first (most likely path)
+    try {
+      await this.navigateViaCustomApps();
+      return;
+    } catch (error) {
+      this.logger.warn('Custom apps navigation failed, trying App manager approach');
+    }
+
+    // Fallback: Try App manager approach
+    await this.navigateToPath('/foundry/app-manager', 'App manager page');
+
+    const appLink = this.page.getByRole('link', { name: appName, exact: true });
+
+    try {
+      await expect(appLink).toBeVisible({ timeout: 3000 });
+      this.logger.success(`Found app in manager: ${appName}`);
+      await appLink.click();
+
+      // Click "View in catalog"
+      const viewCatalogLink = this.page.getByRole('link', { name: 'View in catalog' });
+      await expect(viewCatalogLink).toBeVisible({ timeout: 5000 });
+      await viewCatalogLink.click();
+
+      // Click "Open app"
+      const openButton = this.page.getByRole('button', { name: 'Open app' });
+      await expect(openButton).toBeVisible({ timeout: 5000 });
+      await openButton.click();
+      this.logger.success('Accessed existing app successfully');
+
+    } catch (error) {
+      throw new Error(`App "${appName}" not found. Please ensure it's deployed and installed.`);
+    }
   }
 
   /**
