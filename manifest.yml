@@ -1,6 +1,6 @@
 name: Scalable RTR
 description: Orchestrates the verification of files and registry keys across Windows systems by targeting specific hosts
-logo: ""
+logo: images/logo.png 
 manifest_version: "2023-05-09"
 ignored:
     - ui/(extensions|pages)/.*?/config
