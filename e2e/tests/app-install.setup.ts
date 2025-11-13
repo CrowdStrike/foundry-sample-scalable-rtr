@@ -1,6 +1,6 @@
 import { test as setup } from '../src/fixtures';
 
-setup('install scalaule rtr app', async ({ appCatalogPage, appName }) => {
+setup('install scalable rtr app', async ({ appCatalogPage, appName }) => {
   // Check if app is already installed (this navigates to the app page)
   const isInstalled = await appCatalogPage.isAppInstalled(appName);
 
