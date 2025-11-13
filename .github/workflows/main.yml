@@ -14,9 +14,9 @@ jobs:
         with:
           egress-policy: audit
 
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.0.0
       - name: Setup Go
-        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00  # v6
+        uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a # v6.0.0
         with:
           go-version: '1.23.x'
       - name: Install Go dependencies
@@ -30,23 +30,23 @@ jobs:
           go build -C functions/Func_Jobs
           go build -C functions/job_history
       - name: Use Node 22
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903  # v6
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v6.0.0
         with:
           node-version: 22
           cache: 'yarn'
           cache-dependency-path: ui/pages/scalable-rtr-react/yarn.lock
       - name: Run yarn install
-        uses: borales/actions-yarn@2a18ac083c150a32c8ae27a3d68fc8f77b2ad4be  # v5
+        uses: borales/actions-yarn@2a18ac083c150a32c8ae27a3d68fc8f77b2ad4be # v5.3.0
         with:
           cmd: install
           dir: ui/pages/scalable-rtr-react
       - name: Build React app
-        uses: borales/actions-yarn@2a18ac083c150a32c8ae27a3d68fc8f77b2ad4be  # v5
+        uses: borales/actions-yarn@2a18ac083c150a32c8ae27a3d68fc8f77b2ad4be # v5.3.0
         with:
           cmd: build
           dir: ui/pages/scalable-rtr-react
       - name: Test the React app
-        uses: borales/actions-yarn@2a18ac083c150a32c8ae27a3d68fc8f77b2ad4be  # v5
+        uses: borales/actions-yarn@2a18ac083c150a32c8ae27a3d68fc8f77b2ad4be # v5.3.0
         with:
           cmd: test
           dir: ui/pages/scalable-rtr-react
