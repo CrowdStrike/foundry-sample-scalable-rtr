@@ -263,14 +263,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crowdstrike/foundry-js@npm:0.19.0":
-  version: 0.19.0
-  resolution: "@crowdstrike/foundry-js@npm:0.19.0"
+"@crowdstrike/foundry-js@npm:0.20.0":
+  version: 0.20.0
+  resolution: "@crowdstrike/foundry-js@npm:0.20.0"
   dependencies:
     emittery: "npm:^1.0.3"
     typescript-memoize: "npm:^1.1.1"
     uuid: "npm:^11.1.0"
-  checksum: 10/73b42d61794db2498e76f93788b1b802f1f290c49dd9a5d0ce5208f6a32b344b00d3941cbc407ede2b08d5634ee6e59f88c2d97edebfd92f3e0e349b5e01837c
+  checksum: 10/b5e9ddd5057435c0ac91dc5632cf2126d8b3b0eb1f69dd64c4b0afde4c38d787c645c8dab1f317acd06bbbed724699ae28aa6254f9186d32077ad836d5879344
   languageName: node
   linkType: hard
 
@@ -5095,7 +5095,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "scalable-rtr-react@workspace:."
   dependencies:
-    "@crowdstrike/foundry-js": "npm:0.19.0"
+    "@crowdstrike/foundry-js": "npm:0.20.0"
     "@shoelace-style/shoelace": "npm:2.20.1"
     "@testing-library/dom": "npm:10.4.1"
     "@testing-library/jest-dom": "npm:6.8.0"
