@@ -36,18 +36,18 @@ export class AppCatalogPage extends BasePage {
     const baseUrl = config.falconBaseUrl || 'https://falcon.us-2.crowdstrike.com';
     const filterParam = encodeURIComponent(`name:~'${appName}'`);
     await this.page.goto(`${baseUrl}/foundry/app-catalog?filter=${filterParam}`);
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
 
     const appLink = this.page.getByRole('link', { name: appName, exact: true });
 
     try {
       await this.waiter.waitForVisible(appLink, {
         description: `App '${appName}' link in catalog`,
-        timeout: 10000
+        timeout: 30000
       });
       this.logger.success(`Found app '${appName}' in catalog`);
       await this.smartClick(appLink, `App '${appName}' link`);
-      await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+      await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
     } catch (error) {
       throw new Error(`Could not find app '${appName}' in catalog. Make sure the app is deployed.`);
     }
@@ -208,7 +208,7 @@ export class AppCatalogPage extends BasePage {
     // Navigate directly to app catalog with search query
     const baseUrl = new URL(this.page.url()).origin;
     await this.page.goto(`${baseUrl}/foundry/app-catalog?filter=name%3A~%27${appName}%27`);
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
 
     // Check status a couple times (up to 10 seconds)
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /installed/i });
