@@ -389,6 +389,7 @@ export class ScalableRTRHomePage extends BasePage {
         // Open hamburger menu
         const menuButton = this.page.getByTestId('nav-trigger');
         await this.smartClick(menuButton, 'Menu button');
+        await this.page.waitForLoadState('networkidle');
 
         // Click Custom apps
         const customAppsButton = this.page.getByRole('button', { name: 'Custom apps' });
