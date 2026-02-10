@@ -36,19 +36,28 @@ export class AppCatalogPage extends BasePage {
     const baseUrl = config.falconBaseUrl || 'https://falcon.us-2.crowdstrike.com';
     const filterParam = encodeURIComponent(`name:~'${appName}'`);
     await this.page.goto(`${baseUrl}/foundry/app-catalog?filter=${filterParam}`);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('networkidle').catch(() => {
+      this.logger.info('networkidle timeout on catalog page, continuing...');
+    });
 
     const appLink = this.page.getByRole('link', { name: appName, exact: true });
 
     try {
       await this.waiter.waitForVisible(appLink, {
         description: `App '${appName}' link in catalog`,
-        timeout: 10000
+        timeout: 60000
       });
       this.logger.success(`Found app '${appName}' in catalog`);
       await this.smartClick(appLink, `App '${appName}' link`);
-      await this.page.waitForLoadState('networkidle');
+      await this.page.waitForLoadState('networkidle').catch(() => {});
     } catch (error) {
+      // Debug: log page state to help diagnose CI-only failures
+      const currentUrl = this.page.url();
+      this.logger.info(`Page URL when app not found: ${currentUrl}`);
+      const title = await this.page.title().catch(() => 'unknown');
+      this.logger.info(`Page title: ${title}`);
+      const linkCount = await this.page.getByRole('link').count().catch(() => -1);
+      this.logger.info(`Total links on page: ${linkCount}`);
       throw new Error(`Could not find app '${appName}' in catalog. Make sure the app is deployed.`);
     }
   }
@@ -95,7 +104,7 @@ export class AppCatalogPage extends BasePage {
 
     // Wait for URL to change to install page and page to stabilize
     await this.page.waitForURL(/\/foundry\/app-catalog\/[^\/]+\/install$/, { timeout: 10000 });
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     // Handle permissions dialog
     await this.handlePermissionsDialog();
@@ -208,7 +217,7 @@ export class AppCatalogPage extends BasePage {
     // Navigate directly to app catalog with search query
     const baseUrl = new URL(this.page.url()).origin;
     await this.page.goto(`${baseUrl}/foundry/app-catalog?filter=name%3A~%27${appName}%27`);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('networkidle').catch(() => {});
 
     // Check status a couple times (up to 10 seconds)
     const statusText = this.page.locator('[data-test-selector="status-text"]').filter({ hasText: /installed/i });
