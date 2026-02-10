@@ -21,7 +21,7 @@ export default defineConfig({
     baseURL: process.env.FALCON_BASE_URL || 'https://falcon.us-2.crowdstrike.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: process.env.CI ? 'off' : 'retain-on-failure',
+    video: isCI ? 'off' : 'retain-on-failure',
     testIdAttribute: 'data-test-selector',
   },
 
