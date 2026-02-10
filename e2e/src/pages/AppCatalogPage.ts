@@ -51,6 +51,13 @@ export class AppCatalogPage extends BasePage {
       await this.smartClick(appLink, `App '${appName}' link`);
       await this.page.waitForLoadState('networkidle').catch(() => {});
     } catch (error) {
+      // Debug: log page state to help diagnose CI-only failures
+      const currentUrl = this.page.url();
+      this.logger.info(`Page URL when app not found: ${currentUrl}`);
+      const title = await this.page.title().catch(() => 'unknown');
+      this.logger.info(`Page title: ${title}`);
+      const linkCount = await this.page.getByRole('link').count().catch(() => -1);
+      this.logger.info(`Total links on page: ${linkCount}`);
       throw new Error(`Could not find app '${appName}' in catalog. Make sure the app is deployed.`);
     }
   }
