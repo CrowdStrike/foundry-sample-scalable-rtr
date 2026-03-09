@@ -24,6 +24,11 @@
     "temporal-polyfill": "0.2.5",
     "zod": "4.1.8"
   },
+  "resolutions": {
+    "minimatch": "^10.2.2",
+    "rollup": "^4.59.0",
+    "tar": "^7.5.10"
+  },
   "devDependencies": {
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.8.0",
