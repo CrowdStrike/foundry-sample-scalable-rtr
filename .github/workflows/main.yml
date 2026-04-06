@@ -33,7 +33,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: ui/pages/scalable-rtr-react/yarn.lock
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --no-immutable
         working-directory: ui/pages/scalable-rtr-react
       - name: Build React app
         run: yarn build
