@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "yarn@4.12.0",
   "scripts": {
     "dev": "tsc &&  NODE_ENV=development vite build --minify=false --watch",
     "build": "tsc && vite build",
