@@ -9,6 +9,8 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Setup Go
         uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
@@ -31,7 +33,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: ui/pages/scalable-rtr-react/yarn.lock
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --no-immutable
         working-directory: ui/pages/scalable-rtr-react
       - name: Build React app
         run: yarn build

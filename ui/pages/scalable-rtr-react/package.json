@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "yarn@4.12.0+sha512.f45ab632439a67f8bc759bf32ead036a1f413287b9042726b7cc4818b7b49e14e9423ba49b18f9e06ea4941c1ad062385b1d8760a8d5091a1a31e5f6219afca8",
   "scripts": {
     "dev": "tsc &&  NODE_ENV=development vite build --minify=false --watch",
     "build": "tsc && vite build",
@@ -25,10 +26,18 @@
     "zod": "4.1.8"
   },
   "resolutions": {
+    "brace-expansion@npm:^5.0.2": "5.0.5",
     "flatted": "^3.4.2",
     "minimatch": "^10.2.2",
+    "picomatch@npm:^2.0.4": "2.3.2",
+    "picomatch@npm:^2.2.1": "2.3.2",
+    "picomatch@npm:^2.3.1": "2.3.2",
+    "picomatch@npm:^4.0.2": "4.0.4",
+    "picomatch@npm:^4.0.3": "4.0.4",
     "rollup": "^4.59.0",
-    "tar": "^7.5.10"
+    "tar": "^7.5.10",
+    "yaml@npm:^1.10.0": "1.10.3",
+    "yaml@npm:^2.3.4": "2.8.3"
   },
   "devDependencies": {
     "@testing-library/dom": "10.4.1",
