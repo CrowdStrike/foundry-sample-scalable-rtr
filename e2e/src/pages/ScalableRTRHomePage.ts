@@ -29,7 +29,7 @@ export class ScalableRTRHomePage extends BasePage {
     this.logger.success(`Successfully navigated to Foundry app page: ${this.sanitizeUrl(currentUrl)}`);
 
     // Wait for iframe content to load - the app renders inside an iframe
-    const frame = this.page.frameLocator('iframe').first();
+    const frame = this.page.frameLocator('iframe[name="portal"]').first();
     const appContent = frame.locator('text="All jobs"')
       .or(frame.locator('text="Run history"'))
       .or(frame.locator('text="Audit log"'))
@@ -96,7 +96,7 @@ export class ScalableRTRHomePage extends BasePage {
         await this.retryPageLoadAfter404();
       }
 
-      const iframe = this.page.locator('iframe');
+      const iframe = this.page.locator('iframe[name="portal"]');
       await iframe.waitFor({ state: 'visible', timeout: 30000 });
       await this.verifyPageLoaded();
       return true;
@@ -203,7 +203,7 @@ export class ScalableRTRHomePage extends BasePage {
   async navigateToAllJobs(): Promise<void> {
     this.logger.step('Navigate to All Jobs page');
 
-    const frame = this.page.frameLocator('iframe').first();
+    const frame = this.page.frameLocator('iframe[name="portal"]').first();
     const allJobsTab = frame.locator('text="All jobs"').first();
     await allJobsTab.click();
     await this.waiter.delay(500);
@@ -217,7 +217,7 @@ export class ScalableRTRHomePage extends BasePage {
   async navigateToRunHistory(): Promise<void> {
     this.logger.step('Navigate to Run History page');
 
-    const frame = this.page.frameLocator('iframe').first();
+    const frame = this.page.frameLocator('iframe[name="portal"]').first();
     const runHistoryTab = frame.locator('text="Run history"').first();
     await runHistoryTab.click();
     await this.waiter.delay(500);
@@ -231,7 +231,7 @@ export class ScalableRTRHomePage extends BasePage {
   async navigateToAuditLog(): Promise<void> {
     this.logger.step('Navigate to Audit Log page');
 
-    const frame = this.page.frameLocator('iframe').first();
+    const frame = this.page.frameLocator('iframe[name="portal"]').first();
     const auditLogTab = frame.locator('text="Audit log"').first();
     await auditLogTab.click();
     await this.waiter.delay(500);
