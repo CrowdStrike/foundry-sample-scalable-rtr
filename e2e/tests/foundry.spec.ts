@@ -137,7 +137,7 @@ test.describe('Scalable RTR App E2E Tests', () => {
 
     await scalableRTRHomePage.navigateToInstalledApp();
 
-    const frame = page.frameLocator('iframe').first();
+    const frame = page.frameLocator('iframe[name="portal"]').first();
 
     await scalableRTRHomePage.navigateToAllJobs();
     let allJobsVisible = await frame.locator('text="All jobs"').isVisible();
