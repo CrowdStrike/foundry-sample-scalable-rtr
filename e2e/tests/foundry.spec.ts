@@ -110,18 +110,13 @@ test.describe('Scalable RTR App E2E Tests', () => {
     await scalableRTRHomePage.navigateToAllJobs();
 
     const hasButton = await allJobsPage.hasCreateJobButton();
+    expect(hasButton).toBeTruthy();
 
-    if (hasButton) {
-      await allJobsPage.clickCreateJob();
-      await allJobsPage.waiter.delay(1000);
+    await allJobsPage.clickCreateJob();
+    await allJobsPage.waiter.delay(1000);
 
-      const url = allJobsPage.getCurrentUrl();
-      const hasCreateJobUrl = url.includes('create-job');
-      console.log(`Create Job form accessible: ${hasCreateJobUrl}`);
-      expect(hasButton).toBeTruthy();
-    } else {
-      console.log('ℹ️  Create Job button not found (may be permission-based)');
-    }
+    const url = allJobsPage.getCurrentUrl();
+    expect(url).toContain('create-job');
 
     console.log('✅ Create Job button accessibility verified');
   });

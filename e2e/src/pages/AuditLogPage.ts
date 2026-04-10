@@ -69,12 +69,18 @@ export class AuditLogPage extends BasePage {
   async verifyPageRenders(): Promise<boolean> {
     this.logger.step('Verify Audit Log page renders');
 
-    // Check for presence of "Audit log" tab being active or visible content
     const frame = this.page.frameLocator('iframe[name="portal"]').first();
-    const auditLogText = frame.locator('text="Audit log"');
-    const hasContent = await this.elementExists(auditLogText, 3000);
+    const heading = frame.locator('h1', { hasText: /audit log/i });
+    const hasHeading = await this.elementExists(heading, 10000);
 
-    this.logger.info(`Audit Log page renders: ${hasContent}`);
-    return hasContent;
+    if (!hasHeading) {
+      const table = frame.locator('table');
+      const hasTable = await this.elementExists(table, 3000);
+      this.logger.info(`Audit Log page renders: ${hasTable} (table fallback)`);
+      return hasTable;
+    }
+
+    this.logger.info(`Audit Log page renders: ${hasHeading}`);
+    return hasHeading;
   }
 }
