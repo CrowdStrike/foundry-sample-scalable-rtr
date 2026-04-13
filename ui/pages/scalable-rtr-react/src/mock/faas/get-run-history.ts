@@ -58,7 +58,6 @@ export class GetRunHistoryHandler extends MockFaasHandler {
   constructor(args: ConstructorArgs) {
     super(args);
 
-    this.functionId = scalableRtrFunctions.getRunHistory.id;
     this.functionName = scalableRtrFunctions.getRunHistory.name;
     this.requestPath = scalableRtrFunctions.getRunHistory.path;
   }

@@ -98,6 +98,7 @@ test.describe('Scalable RTR App E2E Tests', () => {
   });
 
   test('should verify Create Job button is accessible', async ({
+    page,
     scalableRTRHomePage,
     allJobsPage,
   }) => {
@@ -115,8 +116,10 @@ test.describe('Scalable RTR App E2E Tests', () => {
     await allJobsPage.clickCreateJob();
     await allJobsPage.waiter.delay(1000);
 
-    const url = allJobsPage.getCurrentUrl();
-    expect(url).toContain('create-job');
+    // The Create Job form renders inside the iframe; verify by checking for content
+    const frame = page.frameLocator('iframe[name="portal"]').first();
+    const createJobHeading = frame.locator('h1', { hasText: /create job/i });
+    await expect(createJobHeading).toBeVisible({ timeout: 10000 });
 
     console.log('✅ Create Job button accessibility verified');
   });

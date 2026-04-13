@@ -9,7 +9,6 @@ export class CreateJobHandler extends MockFaasHandler {
   constructor(args: ConstructorArgs) {
     super(args);
 
-    this.functionId = scalableRtrFunctions.createJob.id;
     this.functionName = scalableRtrFunctions.createJob.name;
     this.requestPath = scalableRtrFunctions.createJob.path;
   }

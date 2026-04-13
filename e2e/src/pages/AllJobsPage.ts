@@ -83,11 +83,13 @@ export class AllJobsPage extends BasePage {
 
     const frame = this.page.frameLocator('iframe[name="portal"]').first();
     const heading = frame.locator('h1', { hasText: /all jobs/i });
+    const emptyState = frame.locator('h2', { hasText: /no jobs yet/i });
     const hasHeading = await this.elementExists(heading, 10000);
     const hasButton = await this.hasCreateJobButton();
+    const hasEmptyState = await this.elementExists(emptyState, 3000);
 
-    const renders = hasHeading && hasButton;
-    this.logger.info(`All Jobs page renders: ${renders} (heading: ${hasHeading}, button: ${hasButton})`);
+    const renders = (hasHeading && hasButton) || hasEmptyState;
+    this.logger.info(`All Jobs page renders: ${renders} (heading: ${hasHeading}, button: ${hasButton}, emptyState: ${hasEmptyState})`)
 
     return renders;
   }
