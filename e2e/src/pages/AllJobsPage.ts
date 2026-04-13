@@ -89,7 +89,7 @@ export class AllJobsPage extends BasePage {
     const hasEmptyState = await this.elementExists(emptyState, 3000);
 
     const renders = (hasHeading && hasButton) || hasEmptyState;
-    this.logger.info(`All Jobs page renders: ${renders} (heading: ${hasHeading}, button: ${hasButton}, emptyState: ${hasEmptyState})`);
+    this.logger.info(`All Jobs page renders: ${renders} (heading: ${hasHeading}, button: ${hasButton}, emptyState: ${hasEmptyState})`)
 
     return renders;
   }
