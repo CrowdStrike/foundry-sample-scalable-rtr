@@ -98,6 +98,7 @@ test.describe('Scalable RTR App E2E Tests', () => {
   });
 
   test('should verify Create Job button is accessible', async ({
+    page,
     scalableRTRHomePage,
     allJobsPage,
   }) => {
@@ -110,18 +111,15 @@ test.describe('Scalable RTR App E2E Tests', () => {
     await scalableRTRHomePage.navigateToAllJobs();
 
     const hasButton = await allJobsPage.hasCreateJobButton();
+    expect(hasButton).toBeTruthy();
 
-    if (hasButton) {
-      await allJobsPage.clickCreateJob();
-      await allJobsPage.waiter.delay(1000);
+    await allJobsPage.clickCreateJob();
+    await allJobsPage.waiter.delay(1000);
 
-      const url = allJobsPage.getCurrentUrl();
-      const hasCreateJobUrl = url.includes('create-job');
-      console.log(`Create Job form accessible: ${hasCreateJobUrl}`);
-      expect(hasButton).toBeTruthy();
-    } else {
-      console.log('ℹ️  Create Job button not found (may be permission-based)');
-    }
+    // The Create Job form renders inside the iframe; verify by checking for content
+    const frame = page.frameLocator('iframe[name="portal"]').first();
+    const createJobHeading = frame.locator('h1', { hasText: /create job/i });
+    await expect(createJobHeading).toBeVisible({ timeout: 10000 });
 
     console.log('✅ Create Job button accessibility verified');
   });

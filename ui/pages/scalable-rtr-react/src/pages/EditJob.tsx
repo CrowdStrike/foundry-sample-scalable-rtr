@@ -38,8 +38,8 @@ export const loader: Loader = ({ falcon }) => {
       throw new Error("EditJob requires an id");
     }
 
-    const { name, version, path } = FAAS.getJobDetails;
-    const getJobDetails = falcon.cloudFunction({ name, version });
+    const { name, path } = FAAS.getJobDetails;
+    const getJobDetails = falcon.cloudFunction({ name });
 
     const job = await getJobDetails.get({
       params: { query: { id: [jobId] } },

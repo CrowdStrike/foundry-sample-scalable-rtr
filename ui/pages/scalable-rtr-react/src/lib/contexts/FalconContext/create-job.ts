@@ -55,8 +55,8 @@ function createJob(falcon: FalconApi<LocalData>) {
         };
 
         const { user } = getUserData({ falcon });
-        const { name, version, path } = FAAS.createJob;
-        const createJob = falcon.cloudFunction({ name, version });
+        const { name, path } = FAAS.createJob;
+        const createJob = falcon.cloudFunction({ name });
         const { jobName, jobDescription, ...rest } = data;
 
         const action = {

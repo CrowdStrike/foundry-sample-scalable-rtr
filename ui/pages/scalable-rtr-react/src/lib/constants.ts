@@ -17,37 +17,25 @@ export const UI_FLAGS = {
 
 export const DEFAULT_ITEMS_LIMIT = 10;
 
-const scalableRtrVersion = 1;
-
 export const scalableRtrFunctions = {
   createJob: {
-    version: scalableRtrVersion,
     path: "/upsert-job",
-    id: "unknown",
     name: "Func_Jobs",
   },
   getJobs: {
-    version: scalableRtrVersion,
     path: "/jobs",
-    id: "unknown",
     name: "Func_Jobs",
   },
   getJobDetails: {
-    version: scalableRtrVersion,
     path: "/job",
-    id: "unknown",
     name: "Func_Jobs",
   },
   getAuditLog: {
-    version: scalableRtrVersion,
     path: "/audits",
-    id: "unknown",
     name: "Func_Jobs",
   },
   getRunHistory: {
-    version: scalableRtrVersion,
     path: "/run-history",
-    id: "unknown",
     name: "job_history",
   },
 };

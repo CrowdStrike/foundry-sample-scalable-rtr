@@ -24,8 +24,8 @@ export const loader: Loader = ({ falcon }) => {
     if (prev !== "") page = parseInt(prev.split(":")[1]);
     else if (next !== "") page = parseInt(next.split(":")[1]) + 1;
 
-    const { name, version, path } = FAAS.getAuditLog;
-    const getAuditLog = falcon.cloudFunction({ name, version });
+    const { name, path } = FAAS.getAuditLog;
+    const getAuditLog = falcon.cloudFunction({ name });
     const rawResult = await getAuditLog.get({
       path,
       params: {
@@ -39,9 +39,11 @@ export const loader: Loader = ({ falcon }) => {
     });
     const result = auditLogDataSchema.parse(rawResult);
 
-    result.body.meta.offset = result.body.resources?.[0]?.id ?? "";
-    // Add a computed page number to render the pagination data
-    result.body.meta.page = page;
+    if (result.body) {
+      result.body.meta.offset = result.body.resources?.[0]?.id ?? "";
+      // Add a computed page number to render the pagination data
+      result.body.meta.page = page;
+    }
 
     return result;
   };
@@ -50,7 +52,11 @@ export const loader: Loader = ({ falcon }) => {
 function AuditLog() {
   const data = useParsedLoaderData<AuditLogDataSchema>(auditLogDataSchema);
 
-  if (data.body.meta.total === 0) {
+  if (data.body?.meta.total === 0) {
+    return <NoAuditLogs />;
+  }
+
+  if (!data.body) {
     return <NoAuditLogs />;
   }
 

@@ -218,13 +218,15 @@ export const MetaSchema = z.object({
 });
 
 export const allJobsDataSchema = z.object({
-  body: z.object({
-    resources: z
-      .array(JobSchema)
-      .nullable()
-      .transform((val) => val ?? []),
-    meta: MetaSchema,
-  }),
+  body: z
+    .object({
+      resources: z
+        .array(JobSchema)
+        .nullable()
+        .transform((val) => val ?? []),
+      meta: MetaSchema,
+    })
+    .nullable(),
 });
 
 export const jobDataSchema = z.object({
@@ -250,13 +252,15 @@ export const RunHistorySchema = z.object({
 export type RunHistory = z.infer<typeof RunHistorySchema>;
 
 export const runHistoryDataSchema = z.object({
-  body: z.object({
-    resources: z
-      .array(RunHistorySchema)
-      .nullable()
-      .transform((val) => val ?? []),
-    meta: MetaSchema,
-  }),
+  body: z
+    .object({
+      resources: z
+        .array(RunHistorySchema)
+        .nullable()
+        .transform((val) => val ?? []),
+      meta: MetaSchema,
+    })
+    .nullable(),
 });
 
 export const AuditLogSchema = z.object({
@@ -272,13 +276,15 @@ export const AuditLogSchema = z.object({
 export type AuditLog = z.infer<typeof AuditLogSchema>;
 
 export const auditLogDataSchema = z.object({
-  body: z.object({
-    resources: z
-      .array(AuditLogSchema)
-      .nullable()
-      .transform((val) => val ?? []),
-    meta: MetaSchema,
-  }),
+  body: z
+    .object({
+      resources: z
+        .array(AuditLogSchema)
+        .nullable()
+        .transform((val) => val ?? []),
+      meta: MetaSchema,
+    })
+    .nullable(),
 });
 
 export const historyJobsAuditLogSchema = z.object({

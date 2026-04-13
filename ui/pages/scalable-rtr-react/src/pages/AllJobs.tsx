@@ -32,11 +32,8 @@ export const loader: Loader = ({ falcon }) => {
     /**
      * Getting AllJobs
      */
-    const { name, version, path } = FAAS.getJobs;
-    const getJobs = falcon.cloudFunction({
-      name,
-      version,
-    });
+    const { name, path } = FAAS.getJobs;
+    const getJobs = falcon.cloudFunction({ name });
     const result = await getJobs.get({
       path,
       params: {
@@ -50,9 +47,11 @@ export const loader: Loader = ({ falcon }) => {
     });
     const safeResult = allJobsDataSchema.parse(result);
 
-    safeResult.body.meta.offset = safeResult.body.resources?.[0]?.id ?? "";
-    // Add a computed page number to render the pagination data
-    safeResult.body.meta.page = page;
+    if (safeResult.body) {
+      safeResult.body.meta.offset = safeResult.body.resources?.[0]?.id ?? "";
+      // Add a computed page number to render the pagination data
+      safeResult.body.meta.page = page;
+    }
 
     return safeResult;
   };
@@ -98,7 +97,11 @@ function AllJobs() {
     }
   }, [location.state]);
 
-  if (data.body.meta.total === 0) {
+  if (data.body?.meta.total === 0) {
+    return <NoJobs />;
+  }
+
+  if (!data.body) {
     return <NoJobs />;
   }
 

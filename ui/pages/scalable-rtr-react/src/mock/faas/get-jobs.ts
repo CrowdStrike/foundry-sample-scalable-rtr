@@ -58,7 +58,6 @@ export class GetJobsHandler extends MockFaasHandler {
   constructor(args: ConstructorArgs) {
     super(args);
 
-    this.functionId = scalableRtrFunctions.getJobs.id;
     this.functionName = scalableRtrFunctions.getJobs.name;
     this.requestPath = scalableRtrFunctions.getJobs.path;
   }
