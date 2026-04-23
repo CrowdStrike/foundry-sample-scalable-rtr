@@ -3,8 +3,8 @@
  */
 
 import { Page, expect } from '@playwright/test';
-import { BasePage } from './BasePage';
-import { config } from '../config/TestConfig';
+import { BasePage } from '@crowdstrike/foundry-playwright';
+import { config } from '@crowdstrike/foundry-playwright';
 
 export class ScalableRTRHomePage extends BasePage {
   constructor(page: Page) {
