@@ -6,7 +6,7 @@
  */
 
 import { test, expect } from '../src/fixtures';
-import { config } from '../src/config/TestConfig';
+import { config } from '@crowdstrike/foundry-playwright';
 
 // Parallel mode: each test gets its own browser context and navigates independently
 test.describe.configure({ mode: 'parallel' });
@@ -14,10 +14,11 @@ test.describe.configure({ mode: 'parallel' });
 test.describe('Scalable RTR App E2E Tests', () => {
   // Print configuration before tests
   test.beforeAll(() => {
-    config.printSummary();
+    config.logSummary();
   });
 
   test('should navigate to Scalable RTR app', async ({
+    page,
     scalableRTRHomePage,
     appName,
   }) => {
@@ -28,7 +29,7 @@ test.describe('Scalable RTR App E2E Tests', () => {
 
     await scalableRTRHomePage.navigateToInstalledApp();
 
-    const currentUrl = scalableRTRHomePage.getCurrentUrl();
+    const currentUrl = page.url();
     expect(currentUrl).toContain('foundry');
 
     console.log(`✅ Successfully navigated to ${appName}`);
@@ -114,7 +115,7 @@ test.describe('Scalable RTR App E2E Tests', () => {
     expect(hasButton).toBeTruthy();
 
     await allJobsPage.clickCreateJob();
-    await allJobsPage.waiter.delay(1000);
+    await page.waitForLoadState('domcontentloaded');
 
     // The Create Job form renders inside the iframe; verify by checking for content
     const frame = page.frameLocator('iframe[name="portal"]').first();
