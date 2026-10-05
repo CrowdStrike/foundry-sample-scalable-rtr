@@ -27,7 +27,7 @@
   },
   "resolutions": {
     "@babel/core@npm:^7.28.3": "7.29.7",
-    "brace-expansion@npm:^5.0.2": "5.0.6",
+    "brace-expansion@npm:^5.0.5": "5.0.12",
     "flatted": "^3.4.2",
     "minimatch": "^10.2.2",
     "picomatch@npm:^2.0.4": "2.3.2",
@@ -36,7 +36,7 @@
     "picomatch@npm:^4.0.2": "4.0.4",
     "picomatch@npm:^4.0.3": "4.0.4",
     "rollup": "^4.59.0",
-    "tar": "^7.5.16",
+    "tar": "7.5.22",
     "yaml@npm:^1.10.0": "1.10.3",
     "yaml@npm:^2.3.4": "2.8.3",
     "uuid": "13.0.1",
@@ -60,19 +60,12 @@
     "eslint-plugin-react-refresh": "0.4.20",
     "globals": "16.4.0",
     "jsdom": "27.0.0",
-    "postcss": "8.5.18",
+    "postcss": "8.5.28",
     "prettier": "3.6.2",
     "rollup-plugin-visualizer": "6.0.3",
     "tailwindcss": "3.4.11",
     "typescript": "5.9.2",
-    "vite": "7.3.5",
-    "vitest": "4.1.8"
-  },
-  "overrides": {
-    "tar": "7.5.19",
-    "brace-expansion@1": "1.1.16",
-    "brace-expansion@5": "5.0.7",
-    "js-yaml": "4.3.0",
-    "fast-uri": "3.1.5"
+    "vite": "7.3.6",
+    "vitest": "4.1.11"
   }
 }
