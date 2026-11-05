@@ -1,0 +1,10 @@
+# False positives - sample/placeholder values, not real secrets
+\.github/*
+\.githooks/*
+
+# file already deleted but preserved in history with false positive so excluding
+e2e/src/authenticate.cjs
+
+# Additional false positives (build output, lock files, sample data)
+ui/pages/scalable-rtr-react/.yarn/install-state.gz
+ui/pages/scalable-rtr-react/yarn.lock
