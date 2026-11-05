@@ -12,7 +12,7 @@ create an app from this template using the CLI.
 > [!IMPORTANT]  
 > To view the Quickstart tutorial and deploy this app, you need access to the Falcon console.
 
-Please complete the Foundry Quickstart before deploying this sample. You can find it in Falcon under **Foundry** > **Learn**: [US-1](https://falcon.crowdstrike.com/foundry/learn) | [US-2](https://falcon.us-2.crowdstrike.com/foundry/learn) | [EU](https://falcon.eu-1.crowdstrike.com/foundry/learn). 
+Please complete the [Falcon Foundry CLI Quickstart](https://docs.crowdstrike.com/access?ft:originId=p3e6b484) before deploying this sample.
 
 ## Description
 
@@ -30,6 +30,7 @@ This app illustrates the following functionality amongst other components:
 * The Foundry CLI (instructions below).
 * [pre-commit](https://pre-commit.com/) for secret scanning
 * Go 1.25+ (needed if modifying the app's functions). See https://go.dev/learn for installation instructions.
+* Node 22+ (needed if modifying the app's UI). See https://nodejs.org/en/download for installation instructions.
 * Yarn (needed if modifying the app's UI). See https://yarnpkg.com/getting-started for installation instructions.
 
 ### Install the Foundry CLI
@@ -150,8 +151,8 @@ You should be able to create a job and save it. After the job executes, you'll r
 
 ## Foundry resources
 
-- Foundry documentation: [US-1](https://falcon.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry) | [US-2](https://falcon.us-2.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry) | [EU](https://falcon.eu-1.crowdstrike.com/documentation/category/c3d64B8e/falcon-foundry)
-- Foundry learning resources: [US-1](https://falcon.crowdstrike.com/foundry/learn) | [US-2](https://falcon.us-2.crowdstrike.com/foundry/learn) | [EU](https://falcon.eu-1.crowdstrike.com/foundry/learn)
+- [Falcon Foundry documentation](https://docs.crowdstrike.com/access?ft:originId=c3d64B8e)
+- [Getting started with Falcon Foundry](https://docs.crowdstrike.com/access?ft:originId=ae43a973)
 
 ## Secret Scanning
 
