@@ -28,6 +28,7 @@ This app illustrates the following functionality amongst other components:
 ## Prerequisites
 
 * The Foundry CLI (instructions below).
+* [pre-commit](https://pre-commit.com/) for secret scanning
 * Go 1.25+ (needed if modifying the app's functions). See https://go.dev/learn for installation instructions.
 * Node 22+ (needed if modifying the app's UI). See https://nodejs.org/en/download for installation instructions.
 * Yarn (needed if modifying the app's UI). See https://yarnpkg.com/getting-started for installation instructions.
@@ -65,6 +66,13 @@ Clone this sample to your local system, or [download as a zip file](https://gith
 ```shell
 git clone https://github.com/CrowdStrike/foundry-sample-scalable-rtr
 cd foundry-sample-scalable-rtr
+```
+
+Set up secret scanning:
+
+```shell
+pip install pre-commit
+pre-commit install
 ```
 
 Log in to Foundry:
@@ -145,6 +153,36 @@ You should be able to create a job and save it. After the job executes, you'll r
 
 - [Falcon Foundry documentation](https://docs.crowdstrike.com/access?ft:originId=c3d64B8e)
 - [Getting started with Falcon Foundry](https://docs.crowdstrike.com/access?ft:originId=ae43a973)
+
+## Secret Scanning
+
+This repository enforces secret scanning on every commit via the [pre-commit](https://pre-commit.com/) framework using [betterleaks](https://github.com/betterleaks/betterleaks), a tool that detects secrets and credentials in source code before they are committed.
+
+### Setup
+
+```shell
+# Install pre-commit (run once)
+brew install pre-commit
+
+# Register the git hook (run once after cloning)
+pre-commit install
+```
+
+### How it works
+
+On each `git commit`, betterleaks scans all staged files for secrets and credentials.
+
+| Scenario | Result |
+|----------|--------|
+| Secret detected in staged files | Commit blocked |
+| No secrets found | Commit allowed |
+| pre-commit not installed | No hook runs (secrets not scanned) |
+
+**Bypass (false positives only):**
+
+```shell
+git commit --no-verify
+```
 
 ---
 
